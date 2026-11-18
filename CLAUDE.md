@@ -55,6 +55,9 @@ Aufbau des Repos: siehe `README.md`.
   dann gibt es ✓/✗ (ohne die richtige Antwort zu verraten); eine Begründung oder Auflösung erst danach
   oder nach einer Wartezeit. Die Lösungen dafür dürfen im Quelltext der Seite stehen.
   Auf dem Bildschirm nur neutrale Beschriftungen (z. B. „Stoffebene“, „Teilchenebene“, „fest“).
+- **Schätzen aus Diagrammen:** Sollen die S Wahrscheinlichkeiten oder Werte aus einem Diagramm ablesen
+  oder schätzen, dürfen die genauen Werte nicht beim Antippen erscheinen oder im Diagramm stehen
+  (hat in der Histogramm-Umgebung vom Schätzen abgelenkt). Werte nur zeigen, wenn damit gerechnet werden soll.
 - Mehrere Teile einer Animation über Reiter, jeder Teil direkt verlinkbar über einen Hash-Anker
   (z. B. `#zustaende`), damit das AB pro Aufgabe einen eigenen QR-Code haben kann.
 - Lehrermodus über `?lehrer`: Feineinstellung der Parameter, „Werte kopieren“.
