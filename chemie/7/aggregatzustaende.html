@@ -259,7 +259,7 @@
   <div class="row buttons" id="heatRow" hidden>
     <button class="btn" id="heat" aria-pressed="false">Heizplatte einschalten</button>
     <button class="btn" id="reset">Neu starten</button>
-    <button class="btn" id="levels" aria-pressed="false">Becherglas und Lupe</button>
+    <button class="btn" id="levels" aria-pressed="false">Teilchenebene</button>
     <output class="readout clock" id="clock">0:00 min</output>
   </div>
 
@@ -1167,7 +1167,7 @@ const HEAT = {
 };
 
 const part3 = {
-  levels: false,   // Becherglas und Lupe zeigen; aus = nur Diagramm (Ersatz für V4 auf AB 04)
+  levels: false,   // Lupe (Teilchenebene) zeigen; aus = Becherglas und Diagramm (Ersatz für V4 auf AB 04)
   E: 0,
   time: 0,
   heating: false,
@@ -1241,12 +1241,29 @@ const part3 = {
   },
 
   computeLayout() {
-    if (!this.levels) {
-      // nur Diagramm, darüber die Temperaturanzeige
-      return { chart: { x: 64, y: 70, w: W - 64 - 20, h: H - 70 - 44 }, readout: { x: 64, y: 34 } };
-    }
     // Becherglas mit Thermometer und Heizplatte: lokal x −40…230, y −200…335
     const left = -40, bw = 270, top = -200, bottom = 335, bh = bottom - top;
+    if (!this.levels) {
+      if (W >= H * 1.1) {
+        // Querformat ohne Lupe: Becherglas links, Diagramm rechts daneben
+        const k = Math.min((H - 40) / bh, (W * 0.3) / bw);
+        const cx = W * 0.17, chartX = W * 0.34 + 50;
+        return {
+          beaker: { x: cx - (left + bw / 2) * k, y: H - 8 - bottom * k, k },
+          labels: { bx: cx, y: 16 },
+          chart: { x: chartX, y: 30, w: W - chartX - 20, h: H - 30 - 44 },
+        };
+      }
+      // Hochformat ohne Lupe: Becherglas oben in der Mitte, Diagramm darunter
+      const chartH = Math.max(150, H * 0.4);
+      const th = H - chartH;
+      const k = Math.min((th - 30) / bh, (W * 0.6) / bw);
+      return {
+        beaker: { x: W * 0.5 - (left + bw / 2) * k, y: th - 4 - bottom * k, k },
+        labels: { bx: W * 0.5, y: 16 },
+        chart: { x: 64, y: th + 14, w: W - 64 - 20, h: chartH - 14 - 44 },
+      };
+    }
     const chartH = Math.max(150, H * 0.36);
     const th = H - chartH;
     const R = Math.max(40, Math.min(th / 2 - 22, W * 0.26));
@@ -1262,27 +1279,20 @@ const part3 = {
 
   draw(c) {
     const L = this.layout, st = this.state, phase = st.phase;
-    if (!this.levels) {
-      c.font = '700 28px system-ui, -apple-system, sans-serif';
-      c.fillStyle = COLORS.ink;
-      c.textAlign = 'left';
-      c.textBaseline = 'middle';
-      c.fillText(`Temperatur: ${fmt(Math.round(st.T))}`, L.readout.x, L.readout.y);
-      this.drawChartPart(c, L, st);
-      return;
-    }
     const wy = this.waterY(st);
     drawLabel(c, 'Stoffebene', L.labels.bx, L.labels.y);
-    drawLabel(c, 'Teilchenebene', L.labels.lx, L.labels.y);
+    if (this.levels) drawLabel(c, 'Teilchenebene', L.labels.lx, L.labels.y);
     drawBeaker(c, L.beaker.x, L.beaker.y, L.beaker.k, phase, this.macro, Math.round(st.T),
       phase === 'boilAbove', {
         waterY: wy,
         ice: st.ice > 0 ? icePile(st.ice) : [],
         hotplate: this.heating,
       });
-    const fp = focusPoint(phase, wy);
-    drawConnector(c, { x: L.beaker.x + fp.x * L.beaker.k, y: L.beaker.y + fp.y * L.beaker.k }, L.lupe);
-    this.sim.draw(c, L.lupe.x, L.lupe.y, L.lupe.r);
+    if (this.levels) {
+      const fp = focusPoint(phase, wy);
+      drawConnector(c, { x: L.beaker.x + fp.x * L.beaker.k, y: L.beaker.y + fp.y * L.beaker.k }, L.lupe);
+      this.sim.draw(c, L.lupe.x, L.lupe.y, L.lupe.r);
+    }
     this.drawChartPart(c, L, st);
   },
 
@@ -1453,7 +1463,7 @@ ui.tab3.addEventListener('click', () => showPart(3));
 ui.heat.addEventListener('click', () => part3.setHeating(true));
 ui.reset.addEventListener('click', () => { part3.lupeAbove = false; part3.reset(); syncLupeButtons(); });
 
-// Becherglas und Lupe ein- und ausblenden; der Zustand steht auch im Link (#erhitzen-ebenen)
+// Lupe (Teilchenebene) ein- und ausblenden; der Zustand steht auch im Link (#erhitzen-ebenen)
 function setLevels(on) {
   part3.levels = on;
   ui.levels.setAttribute('aria-pressed', on);
