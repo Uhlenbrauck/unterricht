@@ -259,6 +259,7 @@
   <div class="row buttons" id="heatRow" hidden>
     <button class="btn" id="heat" aria-pressed="false">Heizplatte einschalten</button>
     <button class="btn" id="reset">Neu starten</button>
+    <button class="btn" id="levels" aria-pressed="false">Becherglas und Lupe</button>
     <output class="readout clock" id="clock">0:00 min</output>
   </div>
 
@@ -1166,6 +1167,7 @@ const HEAT = {
 };
 
 const part3 = {
+  levels: false,   // Becherglas und Lupe zeigen; aus = nur Diagramm (Ersatz für V4 auf AB 04)
   E: 0,
   time: 0,
   heating: false,
@@ -1239,6 +1241,10 @@ const part3 = {
   },
 
   computeLayout() {
+    if (!this.levels) {
+      // nur Diagramm, darüber die Temperaturanzeige
+      return { chart: { x: 64, y: 70, w: W - 64 - 20, h: H - 70 - 44 }, readout: { x: 64, y: 34 } };
+    }
     // Becherglas mit Thermometer und Heizplatte: lokal x −40…230, y −200…335
     const left = -40, bw = 270, top = -200, bottom = 335, bh = bottom - top;
     const chartH = Math.max(150, H * 0.36);
@@ -1256,6 +1262,15 @@ const part3 = {
 
   draw(c) {
     const L = this.layout, st = this.state, phase = st.phase;
+    if (!this.levels) {
+      c.font = '700 28px system-ui, -apple-system, sans-serif';
+      c.fillStyle = COLORS.ink;
+      c.textAlign = 'left';
+      c.textBaseline = 'middle';
+      c.fillText(`Temperatur: ${fmt(Math.round(st.T))}`, L.readout.x, L.readout.y);
+      this.drawChartPart(c, L, st);
+      return;
+    }
     const wy = this.waterY(st);
     drawLabel(c, 'Stoffebene', L.labels.bx, L.labels.y);
     drawLabel(c, 'Teilchenebene', L.labels.lx, L.labels.y);
@@ -1268,6 +1283,10 @@ const part3 = {
     const fp = focusPoint(phase, wy);
     drawConnector(c, { x: L.beaker.x + fp.x * L.beaker.k, y: L.beaker.y + fp.y * L.beaker.k }, L.lupe);
     this.sim.draw(c, L.lupe.x, L.lupe.y, L.lupe.r);
+    this.drawChartPart(c, L, st);
+  },
+
+  drawChartPart(c, L, st) {
     drawChart(c, L.chart, this.points, { t: this.time * HEAT.minPerSec, T: st.T });
     if (this.fast()) {
       c.font = '600 15px system-ui, -apple-system, sans-serif';
@@ -1355,6 +1374,7 @@ const ui = {
   tab3:   document.getElementById('tab3'),
   heatRow: document.getElementById('heatRow'),
   heat:   document.getElementById('heat'),
+  levels: document.getElementById('levels'),
   reset:  document.getElementById('reset'),
   clock:  document.getElementById('clock'),
   temp:   document.getElementById('temp'),
@@ -1376,6 +1396,7 @@ let current = part1;
 const HASHES = { 1: '#zustaende', 2: '#temperatur', 3: '#erhitzen' };
 
 function partFromHash() {
+  if (location.hash === '#erhitzen-ebenen') return 3;
   return Number(Object.keys(HASHES).find(n => HASHES[n] === location.hash)) || 1;
 }
 
@@ -1387,7 +1408,8 @@ function showPart(n) {
   ui.tempRow.hidden = n !== 2;
   ui.heatRow.hidden = n !== 3;
   syncLupeButtons();
-  if (location.hash !== HASHES[n]) history.replaceState(null, '', HASHES[n]);
+  const hash = n === 3 && part3.levels ? '#erhitzen-ebenen' : HASHES[n];
+  if (location.hash !== hash) history.replaceState(null, '', hash);
   resize();
 }
 
@@ -1395,7 +1417,7 @@ function showPart(n) {
 function syncLupeButtons() {
   let show = false;
   if (current === part2) show = part2.T === 100;
-  if (current === part3) show = part3.state.phase === 'boil' || part3.state.phase === 'boilAbove';
+  if (current === part3) show = part3.levels && (part3.state.phase === 'boil' || part3.state.phase === 'boilAbove');
   if (ui.lupeSwitch.hidden === show) ui.lupeSwitch.hidden = !show;
   const above = current === part3 ? part3.lupeAbove : part2.lupeAbove;
   ui.lupeIn.setAttribute('aria-pressed', !above);
@@ -1430,6 +1452,17 @@ ui.tab2.addEventListener('click', () => showPart(2));
 ui.tab3.addEventListener('click', () => showPart(3));
 ui.heat.addEventListener('click', () => part3.setHeating(true));
 ui.reset.addEventListener('click', () => { part3.lupeAbove = false; part3.reset(); syncLupeButtons(); });
+
+// Becherglas und Lupe ein- und ausblenden; der Zustand steht auch im Link (#erhitzen-ebenen)
+function setLevels(on) {
+  part3.levels = on;
+  ui.levels.setAttribute('aria-pressed', on);
+  const hash = on ? '#erhitzen-ebenen' : '#erhitzen';
+  if (current === part3 && location.hash !== hash) history.replaceState(null, '', hash);
+  part3.layout = part3.computeLayout();
+  syncLupeButtons();
+}
+ui.levels.addEventListener('click', () => setLevels(!part3.levels));
 ui.temp.addEventListener('input', () => setTemp(Number(ui.temp.value)));
 ui.minus.addEventListener('click', () => setTemp(part2.T - 1));
 ui.plus.addEventListener('click', () => setTemp(part2.T + 1));
@@ -1447,7 +1480,10 @@ ui.slow.addEventListener('click', () => {
   ui.slow.setAttribute('aria-pressed', slow);
 });
 
-window.addEventListener('hashchange', () => showPart(partFromHash()));
+window.addEventListener('hashchange', () => {
+  if (location.hash.startsWith('#erhitzen')) setLevels(location.hash === '#erhitzen-ebenen');
+  showPart(partFromHash());
+});
 window.addEventListener('resize', resize);
 
 /* ════════════════════════════════════════════════════════════════
@@ -1538,6 +1574,7 @@ if (new URLSearchParams(location.search).has('lehrer')) setupTeacher();
 
 part3.reset();
 setTemp(part2.T);
+setLevels(location.hash === '#erhitzen-ebenen');
 showPart(partFromHash());
 requestAnimationFrame(frame);
 </script>
