@@ -18,6 +18,11 @@ Aufbau des Repos: siehe `README.md`.
   im Repo (`<thema>-erarbeitung.html`, Aufgaben neben dem eingebetteten Tool mit `?eingebettet`).
   Die Erarbeitungsseite bietet sich an, wenn die S direkt mit Diagrammen oder Simulationen arbeiten.
   Vorbild: `mathe/q2/binomialverteilung-erarbeitung.html`.
+- Zu einer Erarbeitungsseite kann es auf Kais Wunsch eine **Lösungsseite** geben
+  (`<thema>-loesungen.html`): Lösungen in Schülersprache, pro Teilaufgabe eingeklappt, Sprungziele
+  `#aufgabe1` … wie auf der Erarbeitungsseite. **Nicht verlinkt** (weder Startseite noch Erarbeitungsseite),
+  bis Kai das anders entscheidet (z. B. zur Wiederholung). QR-Codes der Sprungziele in `qr/loesungen/`,
+  auf der Seite im Lehrermodus `?lehrer`. Vorbild: `mathe/q2/binomialverteilung-loesungen.html`.
 - Aufgaben mit NRW-Operatoren formulieren (nenne, beschreibe, vergleiche, erkläre, erläutere …).
 - Fachliche Aussagen prüfen. Didaktische Reduktionen ausdrücklich benennen.
 
@@ -34,8 +39,9 @@ Aufbau des Repos: siehe `README.md`.
   Muss doch etwas verschoben werden, eine Weiterleitungsseite unter der alten Adresse anlegen.
 - Das Repo ist **öffentlich**: keine Schülerdaten, keine Noten, kein fremdes Material
   (Schulbuchseiten, Verlagsabbildungen). Lösungen, die Schüler:innen nicht vorab finden sollen,
-  gehören nicht ins Repo (z. B. Erwartungshorizonte). Ausnahme: Lösungskontrollen in interaktiven
-  Seiten (siehe unten), deren Lösungen im Quelltext stehen.
+  gehören nicht ins Repo (z. B. Erwartungshorizonte). Ausnahmen: Lösungskontrollen in interaktiven
+  Seiten (siehe unten), deren Lösungen im Quelltext stehen, und Lösungsseiten zu Erarbeitungsseiten
+  (siehe oben), wenn Kai sie will.
 
 ## Interaktive Materialien (Animationen, Simulationen)
 
