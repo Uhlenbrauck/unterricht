@@ -18,7 +18,8 @@ Zwischen Schritt 4 und 5 wird die Tabelle im Plenum gesichert.
 
 - Teil 1: https://uhlenbrauck.github.io/unterricht/chemie/7/aggregatzustaende.html#zustaende
 - Teil 2: https://uhlenbrauck.github.io/unterricht/chemie/7/aggregatzustaende.html#temperatur
-- Teil 3: https://uhlenbrauck.github.io/unterricht/chemie/7/aggregatzustaende.html#erhitzen
+- Teil 3, nur Diagramm (Ersatz für V4): https://uhlenbrauck.github.io/unterricht/chemie/7/aggregatzustaende.html#erhitzen
+- Teil 3 mit Becherglas und Lupe (AB 07): https://uhlenbrauck.github.io/unterricht/chemie/7/aggregatzustaende.html#erhitzen-ebenen
 - Hilfekarten zu AB 06: siehe `hilfen/UEBERSICHT.md` (Kennungen `c7-agg-…`)
 
 ## Animation: getroffene Entscheidungen
@@ -33,6 +34,9 @@ bei genau 100 °C Schalter „Wasseroberfläche / über dem Wasser“; mit „ü
 Thermometer angehoben wie in V4.
 
 **Teil 3 – Erhitzen:**
+- Standard: **nur Diagramm** mit großer Temperaturanzeige, ohne Becherglas und Lupe. So taugt Teil 3
+  als Ersatz für V4 auf AB 04, ohne das Teilchenmodell vorwegzunehmen. Der Knopf „Becherglas und Lupe“
+  blendet beides ein; der Link `#erhitzen-ebenen` öffnet Teil 3 direkt mit beidem (für AB 07).
 - Heizplatte, Stoppuhr und Temperatur-Zeit-Diagramm, Messpunkte alle 30 s wie in V4.
 - Haltepunkte bei 0 °C (Eiswürfel schrumpfen, Gitter in der Lupe löst sich auf)
   und 100 °C (Wasserstand sinkt).
