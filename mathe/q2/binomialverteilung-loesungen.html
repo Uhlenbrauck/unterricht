@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Binomialverteilung – Lösungen zur Erarbeitung</title>
+<!--
+  Lösungen zu binomialverteilung-erarbeitung.html (Aufgaben 1–5).
+  Absichtlich nicht verlinkt (weder Startseite noch Erarbeitungsseite). Kai gibt Link bzw. QR-Code heraus.
+  Sprungziele #aufgabe1 … #aufgabe5. Lehrermodus (?lehrer): QR-Codes der Sprungziele (Dateien in qr/loesungen/).
+-->
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #f7f6f2;
+    --surface: #ffffff;
+    --border:  #d9d6cc;
+    --text:    #1a1a18;
+    --muted:   #6b6960;
+    --accent:  #2d5a3d;
+    --accent-lt: #e8f0eb;
+    --bar:     #3b6fb6;
+    --hi:      #e07b1a;
+    --grid:    #e6e3da;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  i, .m { font-family: "Times New Roman", Times, serif; font-style: italic; font-size: 1.1em; }
+
+  header { background: var(--accent); color: #fff; padding: 18px 20px 16px; }
+  header .eyebrow { font-size: 13px; opacity: .8; }
+  header h1 { font-size: clamp(22px, 3.2vw, 30px); font-weight: 600; line-height: 1.25; }
+
+  nav {
+    position: sticky; top: 0; z-index: 5;
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 8px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav a {
+    min-height: 44px; display: inline-flex; align-items: center;
+    padding: 0 18px; border-radius: 22px;
+    border: 2px solid var(--border); background: var(--surface);
+    color: var(--text); text-decoration: none; font-size: 16px;
+  }
+
+  main { max-width: 900px; margin: 0 auto; padding: 16px 20px 60px; }
+
+  .intro { margin-bottom: 18px; color: var(--muted); }
+
+  section {
+    margin-bottom: 28px;
+    scroll-margin-top: 70px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+
+  h2 { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
+  h2 .nr { color: var(--accent); }
+
+  details.loesung { border-top: 1px solid var(--border); padding: 8px 0; }
+
+  details.loesung summary {
+    display: flex; align-items: center; gap: 10px;
+    min-height: 44px;
+    cursor: pointer; list-style: none;
+    font-size: 16px;
+  }
+  details.loesung summary::-webkit-details-marker { display: none; }
+  details.loesung summary .buchstabe { font-weight: 700; color: var(--accent); min-width: 22px; }
+  details.loesung summary .knopf {
+    margin-left: auto; flex: none;
+    padding: 6px 14px; border-radius: 22px;
+    border: 2px solid var(--border); background: var(--bg);
+    color: var(--accent); font-size: 14px; font-weight: 600;
+  }
+  details.loesung summary .knopf::after { content: "Lösung zeigen ▾"; }
+  details.loesung[open] summary .knopf::after { content: "Lösung ausblenden ▴"; }
+
+  .text {
+    margin: 4px 0 6px;
+    padding: 12px 14px;
+    background: var(--accent-lt);
+    border-radius: 8px;
+  }
+  .text p + p, .text p + ul, .text ul + p, .text p + table, .text table + p { margin-top: 8px; }
+  .text ul { padding-left: 20px; }
+  .sprinter {
+    display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 10px;
+    background: var(--accent-lt); color: var(--accent);
+  }
+
+  table { border-collapse: collapse; width: 100%; background: var(--surface); font-size: 15px; }
+  th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: var(--bg); }
+
+  .figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px; margin-top: 10px; }
+  .figs.vier { grid-template-columns: repeat(2, 1fr); }
+  .fig { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 4px; }
+  .fig svg { width: 100%; height: auto; display: block; }
+  .fig .cap { font-size: 13px; color: var(--muted); text-align: center; padding: 2px 4px 4px; }
+
+  /* SVG */
+  .axis { stroke: var(--text); stroke-width: 1.5; }
+  .gridline { stroke: var(--grid); stroke-width: 1; }
+  .tick { fill: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .bar { fill: var(--bar); }
+  .bar.hi { fill: var(--hi); }
+  .lbl { fill: var(--text); font-size: 15px; font-weight: 700; }
+
+  /* Lehrermodus: QR-Codes */
+  #qr { margin-top: 30px; }
+  #qr .codes { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  #qr figure { text-align: center; font-size: 13px; }
+  #qr img { width: 140px; height: 140px; image-rendering: pixelated; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Mathematik GK Q2 · Stochastik</div>
+  <h1>Histogramme der Binomialverteilung – Lösungen</h1>
+</header>
+
+<nav aria-label="Aufgaben">
+  <a href="#aufgabe1">Aufgabe 1</a>
+  <a href="#aufgabe2">Aufgabe 2</a>
+  <a href="#aufgabe3">Aufgabe 3</a>
+  <a href="#aufgabe4">Aufgabe 4</a>
+  <a href="#aufgabe5">Aufgabe 5</a>
+</nav>
+
+<main>
+
+  <p class="intro">Vergleiche nach jeder Teilaufgabe deine eigene Lösung mit der Lösung hier. Deine Formulierung darf anders sein – wichtig ist, dass die Begründung dieselben Punkte enthält.</p>
+
+  <!-- ───────────────────────── Aufgabe 1 ───────────────────────── -->
+  <section id="aufgabe1">
+    <h2><span class="nr">Aufgabe 1</span> | Was zeigt ein Histogramm?</h2>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">a)</span> <i>X</i> binomialverteilt, <i>n</i> und <i>p</i><span class="knopf"></span></summary>
+      <div class="text">
+        <p>Jede Frage ist ein Versuch mit nur zwei Ausgängen: richtig (Treffer) oder falsch (Niete). Weil Jonas zufällig ankreuzt und genau eine von 4 Antworten richtig ist, beträgt die Trefferwahrscheinlichkeit bei jeder Frage <i>p</i>&nbsp;=&nbsp;0,25. Die Fragen beeinflussen sich nicht, und es gibt genau 10 Fragen. Es liegt also eine Bernoulli-Kette vor, und <i>X</i> zählt die Treffer.</p>
+        <p><i>X</i> ist binomialverteilt mit <i>n</i>&nbsp;=&nbsp;10 und <i>p</i>&nbsp;=&nbsp;0,25.</p>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">b)</span> Bedeutung eines Balkens<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Der Balken über der Zahl <i>k</i> gehört zu dem Ereignis „Jonas hat genau <i>k</i> Antworten richtig“. Seine Höhe ist die Wahrscheinlichkeit <i>P</i>(<i>X</i>&nbsp;=&nbsp;<i>k</i>) für dieses Ereignis.</p>
+        <p>Beispiel: Der Balken bei <i>k</i>&nbsp;=&nbsp;3 ist etwa 0,25 hoch. Mit einer Wahrscheinlichkeit von etwa 25&nbsp;% hat Jonas genau 3 Antworten richtig.</p>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">c)</span> wahrscheinlichste Anzahl<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Der höchste Balken steht bei <i>k</i>&nbsp;=&nbsp;2. Am wahrscheinlichsten hat Jonas genau 2 Antworten richtig, mit <i>P</i>(<i>X</i>&nbsp;=&nbsp;2)&nbsp;≈&nbsp;0,2816, also etwa 28&nbsp;%.</p>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">d)</span> Chancen auf „bestanden“<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Entscheidend sind die Balken bei <i>k</i>&nbsp;=&nbsp;5, 6, …, 10, also der rechte Teil des Histogramms (im Bild orange). Diese Balken sind sehr niedrig: <i>P</i>(<i>X</i>&nbsp;=&nbsp;5)&nbsp;≈&nbsp;0,058, <i>P</i>(<i>X</i>&nbsp;=&nbsp;6)&nbsp;≈&nbsp;0,016, die übrigen sind kaum noch zu sehen.</p>
+        <p>Zusammen ergeben sie nur etwa 0,08. Mit Raten besteht Jonas also nur in etwa 8 von 100 Fällen – er hat schlechte Chancen. Die Wahrscheinlichkeit für „bestanden“ entspricht der gesamten Fläche der orangen Balken.</p>
+        <div class="figs"><div class="fig" data-fig="a1d"></div></div>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">e)</span> Gesamtfläche 1<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Jeder Balken ist 1 breit, sein Flächeninhalt ist also Breite · Höhe&nbsp;=&nbsp;1&nbsp;·&nbsp;<i>P</i>(<i>X</i>&nbsp;=&nbsp;<i>k</i>)&nbsp;=&nbsp;<i>P</i>(<i>X</i>&nbsp;=&nbsp;<i>k</i>).</p>
+        <p>Jonas hat sicher genau eine der Anzahlen 0, 1, …, 10 richtig. Diese Ereignisse schließen sich gegenseitig aus und decken alle Möglichkeiten ab. Deshalb ist <i>P</i>(<i>X</i>&nbsp;=&nbsp;0)&nbsp;+&nbsp;<i>P</i>(<i>X</i>&nbsp;=&nbsp;1)&nbsp;+&nbsp;…&nbsp;+&nbsp;<i>P</i>(<i>X</i>&nbsp;=&nbsp;10)&nbsp;=&nbsp;1, und alle Balken zusammen haben den Flächeninhalt 1.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 2 ───────────────────────── -->
+  <section id="aufgabe2">
+    <h2><span class="nr">Aufgabe 2</span> | Wie hängt die Gestalt von <i>n</i> und <i>p</i> ab?</h2>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">a)</span> <i>p</i>&nbsp;=&nbsp;0,3 und <i>p</i>&nbsp;=&nbsp;0,7<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Die beiden Histogramme sind spiegelbildlich zueinander (Spiegelachse bei <i>k</i>&nbsp;=&nbsp;5): Bei <i>p</i>&nbsp;=&nbsp;0,3 liegt der Gipfel bei <i>k</i>&nbsp;=&nbsp;3, bei <i>p</i>&nbsp;=&nbsp;0,7 bei <i>k</i>&nbsp;=&nbsp;7. Zum Beispiel ist der Balken bei <i>k</i>&nbsp;=&nbsp;2 für <i>p</i>&nbsp;=&nbsp;0,3 genauso hoch wie der Balken bei <i>k</i>&nbsp;=&nbsp;8 für <i>p</i>&nbsp;=&nbsp;0,7.</p>
+        <p>Erklärung: Bei <i>p</i>&nbsp;=&nbsp;0,7 hat ein Misserfolg die Wahrscheinlichkeit 0,3. Genau <i>k</i> Erfolge bei 10 Versuchen bedeuten genau 10&nbsp;−&nbsp;<i>k</i> Misserfolge. Zählt man bei <i>p</i>&nbsp;=&nbsp;0,7 die Misserfolge statt der Erfolge, erhält man also dieselbe Verteilung wie bei <i>p</i>&nbsp;=&nbsp;0,3 – nur von rechts nach links gelesen.</p>
+        <div class="figs"><div class="fig" data-fig="a2a1"></div><div class="fig" data-fig="a2a2"></div></div>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">b)</span> Besonderheit bei <i>p</i>&nbsp;=&nbsp;0,5<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Bei <i>p</i>&nbsp;=&nbsp;0,5 ist das Histogramm symmetrisch zur Mitte <i>k</i>&nbsp;=&nbsp;<i>n</i>/2; der Gipfel liegt in der Mitte.</p>
+        <p>Am Galtonbrett: Bei <i>p</i>&nbsp;=&nbsp;0,5 fällt die Kugel an jedem Nagel mit gleicher Wahrscheinlichkeit nach links oder nach rechts. Zu jedem Weg in ein Fach gibt es einen gespiegelten Weg (links und rechts vertauscht) in das gegenüberliegende Fach, mit derselben Wahrscheinlichkeit. Deshalb sind gegenüberliegende Fächer gleich wahrscheinlich.</p>
+        <div class="figs"><div class="fig" data-fig="a2b"></div></div>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">c)</span> Veränderung von <i>p</i> bei festem <i>n</i><span class="knopf"></span></summary>
+      <div class="text">
+        <ul>
+          <li>Wird <i>p</i> größer, wandert der Gipfel nach rechts; wird <i>p</i> kleiner, wandert er nach links.</li>
+          <li>Bei <i>p</i>&nbsp;=&nbsp;0,5 ist das Histogramm symmetrisch. Bei <i>p</i>&nbsp;&lt;&nbsp;0,5 liegt der Gipfel links und das Histogramm läuft nach rechts flach aus, bei <i>p</i>&nbsp;&gt;&nbsp;0,5 umgekehrt.</li>
+          <li>Je näher <i>p</i> an 0 oder 1 liegt, desto schmaler und höher wird das Histogramm, und der Gipfel rückt an den Rand.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">d)</span> Veränderung von <i>n</i> bei festem <i>p</i><span class="knopf"></span></summary>
+      <div class="text">
+        <p>Beobachtung: Wird <i>n</i> größer, wandert das Histogramm nach rechts, es wird breiter und flacher (der höchste Balken wird niedriger).</p>
+        <p>Erklärung:</p>
+        <ul>
+          <li><b>Lage:</b> Bei mehr Versuchen gibt es auch mehr Erfolge. Bei <i>p</i>&nbsp;=&nbsp;0,3 erwartet man ungefähr 30&nbsp;% der Versuche als Erfolge – bei 10 Versuchen etwa 3, bei 50 Versuchen etwa 15.</li>
+          <li><b>Breite:</b> Bei mehr Versuchen sind mehr Anzahlen möglich, und die Anzahl der Erfolge streut stärker.</li>
+          <li><b>Höhe:</b> Die Gesamtfläche aller Balken ist immer 1 (Aufgabe 1 e). Verteilt sie sich auf mehr Balken, müssen die einzelnen Balken niedriger werden.</li>
+        </ul>
+        <div class="figs"><div class="fig" data-fig="a2d"></div></div>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">e)</span> Lage des höchsten Balkens <span class="sprinter">Sprinteraufgabe</span><span class="knopf"></span></summary>
+      <div class="text">
+        <p>Vermutung: Der höchste Balken liegt ungefähr bei <i>k</i>&nbsp;≈&nbsp;<i>n</i>&nbsp;·&nbsp;<i>p</i>.</p>
+        <p>Beispiele: <i>n</i>&nbsp;=&nbsp;10, <i>p</i>&nbsp;=&nbsp;0,3: Gipfel bei 3&nbsp;=&nbsp;10&nbsp;·&nbsp;0,3. <i>n</i>&nbsp;=&nbsp;20, <i>p</i>&nbsp;=&nbsp;0,5: Gipfel bei 10. <i>n</i>&nbsp;=&nbsp;50, <i>p</i>&nbsp;=&nbsp;0,3: Gipfel bei 15. Ist <i>n</i>&nbsp;·&nbsp;<i>p</i> keine ganze Zahl, liegt der Gipfel bei einer benachbarten ganzen Zahl (z.&nbsp;B. <i>n</i>&nbsp;=&nbsp;37, <i>p</i>&nbsp;=&nbsp;0,4: <i>n</i>&nbsp;·&nbsp;<i>p</i>&nbsp;=&nbsp;14,8, Gipfel bei 15).</p>
+        <p>Die Zahl <i>n</i>&nbsp;·&nbsp;<i>p</i> ist die Anzahl der Erfolge, die man „im Mittel“ erwartet. Sie wird später als Erwartungswert genauer untersucht.</p>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">f)</span> Extremfälle <i>p</i>&nbsp;=&nbsp;0 und <i>p</i>&nbsp;=&nbsp;1 <span class="sprinter">Sprinteraufgabe</span><span class="knopf"></span></summary>
+      <div class="text">
+        <p>Bei <i>p</i>&nbsp;=&nbsp;0 ist kein einziger Versuch ein Erfolg. Es gibt nur einen Balken bei <i>k</i>&nbsp;=&nbsp;0 mit der Höhe 1: <i>P</i>(<i>X</i>&nbsp;=&nbsp;0)&nbsp;=&nbsp;1, alle anderen Wahrscheinlichkeiten sind 0.</p>
+        <p>Bei <i>p</i>&nbsp;=&nbsp;1 ist jeder Versuch ein Erfolg. Es gibt nur einen Balken bei <i>k</i>&nbsp;=&nbsp;<i>n</i> mit der Höhe 1.</p>
+        <p>In beiden Fällen ist das Ergebnis nicht mehr zufällig. (Im Tool ragt der Balken über die feste Hochachse hinaus und ist oben abgeschnitten.)</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 3 ───────────────────────── -->
+  <section id="aufgabe3">
+    <h2><span class="nr">Aufgabe 3</span> | Welches Histogramm gehört wozu?</h2>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">a)</span> Zuordnung<span class="knopf"></span></summary>
+      <div class="text">
+        <table>
+          <tr><th>Histogramm</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+          <tr><th>Verteilung</th><td>(4) <i>n</i>&nbsp;=&nbsp;20, <i>p</i>&nbsp;=&nbsp;0,8</td><td>(3) <i>n</i>&nbsp;=&nbsp;40, <i>p</i>&nbsp;=&nbsp;0,5</td><td>(2) <i>n</i>&nbsp;=&nbsp;20, <i>p</i>&nbsp;=&nbsp;0,2</td><td>(1) <i>n</i>&nbsp;=&nbsp;20, <i>p</i>&nbsp;=&nbsp;0,5</td></tr>
+        </table>
+        <div class="figs vier"><div class="fig" data-fig="a3A"></div><div class="fig" data-fig="a3B"></div><div class="fig" data-fig="a3C"></div><div class="fig" data-fig="a3D"></div></div>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">b)</span> Begründung<span class="knopf"></span></summary>
+      <div class="text">
+        <ul>
+          <li><b>Lage:</b> C hat seinen Gipfel links (bei <i>k</i>&nbsp;=&nbsp;4), A rechts (bei <i>k</i>&nbsp;=&nbsp;16). Kleines <i>p</i> bedeutet wenige Erfolge, also gehört C zu <i>p</i>&nbsp;=&nbsp;0,2 und A zu <i>p</i>&nbsp;=&nbsp;0,8 (beide bei <i>n</i>&nbsp;=&nbsp;20: 20&nbsp;·&nbsp;0,2&nbsp;=&nbsp;4 und 20&nbsp;·&nbsp;0,8&nbsp;=&nbsp;16).</li>
+          <li><b>Symmetrie:</b> B und D sind symmetrisch, sie gehören zu den beiden Verteilungen mit <i>p</i>&nbsp;=&nbsp;0,5.</li>
+          <li><b>Breite und Höhe:</b> B ist breiter und flacher als D und hat seinen Gipfel weiter rechts (bei <i>k</i>&nbsp;=&nbsp;20 statt bei <i>k</i>&nbsp;=&nbsp;10). Also gehört B zum größeren <i>n</i>&nbsp;=&nbsp;40 und D zu <i>n</i>&nbsp;=&nbsp;20.</li>
+          <li>A und C sind spiegelbildlich zueinander, wie es bei <i>p</i>&nbsp;=&nbsp;0,2 und <i>p</i>&nbsp;=&nbsp;0,8 sein muss (vgl. Aufgabe 2 a).</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 4 ───────────────────────── -->
+  <section id="aufgabe4">
+    <h2><span class="nr">Aufgabe 4</span> | Kann das ein Histogramm einer Binomialverteilung sein?</h2>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">a)</span> Entscheidungen<span class="knopf"></span></summary>
+      <div class="text">
+        <table>
+          <tr><th>Diagramm</th><th>angegeben</th><th>kann passen?</th></tr>
+          <tr><td>A</td><td><i>n</i>&nbsp;=&nbsp;10, <i>p</i>&nbsp;=&nbsp;0,6</td><td>nein</td></tr>
+          <tr><td>B</td><td><i>n</i>&nbsp;=&nbsp;10, <i>p</i>&nbsp;=&nbsp;0,3</td><td>ja</td></tr>
+          <tr><td>C</td><td><i>n</i>&nbsp;=&nbsp;10, <i>p</i>&nbsp;=&nbsp;0,5</td><td>nein</td></tr>
+          <tr><td>D</td><td><i>n</i>&nbsp;=&nbsp;15, <i>p</i>&nbsp;=&nbsp;0,8</td><td>ja</td></tr>
+          <tr><td>E</td><td><i>n</i>&nbsp;=&nbsp;8, <i>p</i>&nbsp;=&nbsp;0,4</td><td>nein</td></tr>
+          <tr><td>F</td><td><i>n</i>&nbsp;=&nbsp;10, <i>p</i>&nbsp;=&nbsp;0,2</td><td>nein</td></tr>
+        </table>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">b)</span> Begründungen<span class="knopf"></span></summary>
+      <div class="text">
+        <ul>
+          <li><b>A:</b> Die Balkenhöhen ergeben zusammen 1,25 und nicht 1. Die Gesamtfläche muss aber 1 sein (Aufgabe 1 e).</li>
+          <li><b>B:</b> Alles passt: Summe 1, ein Gipfel, und er liegt bei <i>k</i>&nbsp;=&nbsp;3, also links – passend zu <i>p</i>&nbsp;=&nbsp;0,3. Mehr als „kann passen“ lässt sich am Bild nicht sagen.</li>
+          <li><b>C:</b> Für <i>p</i>&nbsp;=&nbsp;0,5 müsste das Histogramm symmetrisch zu <i>k</i>&nbsp;=&nbsp;5 sein. Es ist aber links höher als rechts, der Gipfel liegt bei <i>k</i>&nbsp;=&nbsp;4.</li>
+          <li><b>D:</b> Alles passt: Summe 1, ein Gipfel bei <i>k</i>&nbsp;=&nbsp;12, also rechts – passend zu <i>p</i>&nbsp;=&nbsp;0,8 (15&nbsp;·&nbsp;0,8&nbsp;=&nbsp;12).</li>
+          <li><b>E:</b> Das Diagramm hat zwei getrennte Gipfel. Ein Histogramm einer Binomialverteilung steigt bis zu einem Gipfel an und fällt danach ab.</li>
+          <li><b>F:</b> Bei <i>p</i>&nbsp;=&nbsp;0,2 sind Erfolge selten, der Gipfel müsste links liegen (bei etwa 10&nbsp;·&nbsp;0,2&nbsp;=&nbsp;2). Er liegt aber bei <i>k</i>&nbsp;=&nbsp;7.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 5 ───────────────────────── -->
+  <section id="aufgabe5">
+    <h2><span class="nr">Aufgabe 5</span> | Welche Verteilung ist das? <span class="sprinter">Sprinteraufgabe</span></h2>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">a)</span> Schätzen und begründen<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Die Histogramme werden zufällig erzeugt, deshalb gibt es hier keine festen Zahlen. Eine gute Begründung nutzt:</p>
+        <ul>
+          <li><b>Symmetrie:</b> Ist das Histogramm symmetrisch, ist <i>p</i>&nbsp;≈&nbsp;0,5. Läuft es nach rechts flach aus, ist <i>p</i>&nbsp;&lt;&nbsp;0,5, läuft es nach links aus, ist <i>p</i>&nbsp;&gt;&nbsp;0,5.</li>
+          <li><b>Lage des Gipfels:</b> Der Gipfel liegt bei etwa <i>n</i>&nbsp;·&nbsp;<i>p</i> (Aufgabe 2 e). Hat man <i>p</i> geschätzt, ergibt sich daraus <i>n</i>: <i>n</i>&nbsp;≈&nbsp;Gipfelstelle&nbsp;:&nbsp;<i>p</i>.</li>
+        </ul>
+        <p><i>n</i> kann man nicht direkt ablesen: Die Balken am rechten Rand sind so niedrig, dass man nicht sieht, wo die Verteilung endet.</p>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">b)</span> Schätzung verbessern<span class="knopf"></span></summary>
+      <div class="text">
+        <ul>
+          <li>Liegt dein Umriss zu weit links oder rechts, verändere <i>n</i> oder <i>p</i>, bis die Gipfel übereinanderliegen.</li>
+          <li>Liegen die Gipfel übereinander, aber dein Umriss ist zu schmal und zu hoch: Vergrößere <i>n</i> und verkleinere <i>p</i> so, dass der Gipfel an derselben Stelle bleibt. Ist er zu breit und zu flach, umgekehrt.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">c)</span> Vorgehen beschreiben<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Mögliche Beschreibung: „Zuerst habe ich an der Symmetrie abgeschätzt, ob <i>p</i> kleiner, gleich oder größer als 0,5 ist. Dann habe ich <i>n</i> so gewählt, dass <i>n</i>&nbsp;·&nbsp;<i>p</i> ungefähr bei der Stelle des Gipfels liegt. Zum Schluss habe ich mit dem Umriss verglichen: War mein Histogramm zu schmal, habe ich <i>n</i> vergrößert und <i>p</i> verkleinert, bis Lage und Breite gepasst haben.“</p>
+      </div>
+    </details>
+  </section>
+
+  <section id="qr" hidden>
+    <h2>QR-Codes zu den Lösungen (Lehrermodus)</h2>
+    <div class="codes">
+      <figure><img src="../../qr/loesungen/binomialverteilung-aufgabe1.png" alt="QR-Code Aufgabe 1"><figcaption>Aufgabe 1</figcaption></figure>
+      <figure><img src="../../qr/loesungen/binomialverteilung-aufgabe2.png" alt="QR-Code Aufgabe 2"><figcaption>Aufgabe 2</figcaption></figure>
+      <figure><img src="../../qr/loesungen/binomialverteilung-aufgabe3.png" alt="QR-Code Aufgabe 3"><figcaption>Aufgabe 3</figcaption></figure>
+      <figure><img src="../../qr/loesungen/binomialverteilung-aufgabe4.png" alt="QR-Code Aufgabe 4"><figcaption>Aufgabe 4</figcaption></figure>
+      <figure><img src="../../qr/loesungen/binomialverteilung-aufgabe5.png" alt="QR-Code Aufgabe 5"><figcaption>Aufgabe 5</figcaption></figure>
+    </div>
+  </section>
+
+</main>
+
+<script>
+'use strict';
+
+/* ── Histogramme für die Abbildungen ── */
+function binom(n, p) {
+  const v = [];
+  let c = 1;
+  for (let k = 0; k <= n; k++) {
+    if (k > 0) c = c * (n - k + 1) / k;
+    v.push(c * Math.pow(p, k) * Math.pow(1 - p, n - k));
+  }
+  return v;
+}
+function mix(a, b, w) { return a.map((x, k) => w * x + (1 - w) * b[k]); }
+const fmt = (x, d) => x.toFixed(d).replace('.', ',');
+
+/* opt: kMax, yMax, yStep, hi(k) → orange, label, werte (Höhen beschriften) */
+function hist(values, opt) {
+  const W = 420, H = 230;
+  const m = { l: 40, r: 10, t: opt.label || opt.werte ? 30 : 14, b: 28 };
+  const kMax = opt.kMax ?? values.length - 1;
+  const pw = W - m.l - m.r, ph = H - m.t - m.b;
+  const slot = pw / (kMax + 1), bw = slot * (kMax > 25 ? 0.86 : 0.78);
+  const X = k => m.l + slot * (k + 0.5);
+  const Y = v => m.t + ph * (1 - Math.min(v, opt.yMax) / opt.yMax);
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Histogramm">`;
+  const dec = (String(opt.yStep).split('.')[1] || '').length;
+  for (let i = 0; i * opt.yStep <= opt.yMax + 1e-9; i++) {
+    const y = Y(i * opt.yStep);
+    if (i > 0) s += `<line x1="${m.l}" x2="${m.l + pw}" y1="${y}" y2="${y}" class="gridline"/>`;
+    s += `<text x="${m.l - 5}" y="${y + 4}" text-anchor="end" class="tick">${i ? fmt(i * opt.yStep, dec) : 0}</text>`;
+  }
+  values.forEach((v, k) => {
+    const y = Y(v);
+    s += `<rect x="${X(k) - bw / 2}" y="${y}" width="${bw}" height="${m.t + ph - y}" class="bar${opt.hi && opt.hi(k) ? ' hi' : ''}"/>`;
+    if (opt.werte) s += `<text x="${X(k)}" y="${y - 4}" text-anchor="middle" class="tick">${fmt(v, 3)}</text>`;
+  });
+  s += `<line x1="${m.l}" x2="${m.l + pw}" y1="${m.t + ph}" y2="${m.t + ph}" class="axis"/>`;
+  s += `<line x1="${m.l}" x2="${m.l}" y1="${m.t + ph}" y2="${m.t - 6}" class="axis"/>`;
+  let ks = 1;
+  for (const t of [1, 2, 5, 10]) { ks = t; if (slot * t >= 22) break; }
+  for (let k = 0; k <= kMax; k += ks) s += `<text x="${X(k)}" y="${m.t + ph + 16}" text-anchor="middle" class="tick">${k}</text>`;
+  if (opt.label) s += `<text x="${m.l + 6}" y="18" class="lbl">${opt.label}</text>`;
+  return s + '</svg>';
+}
+
+const FIGS = {
+  a1d:  { values: binom(10, 0.25), yMax: 0.3, yStep: 0.1, hi: k => k >= 5, cap: 'n = 10, p = 0,25: orange die Balken zu „bestanden“ (k ≥ 5)' },
+  a2a1: { values: binom(10, 0.3), yMax: 0.3, yStep: 0.1, cap: 'n = 10, p = 0,3' },
+  a2a2: { values: binom(10, 0.7), yMax: 0.3, yStep: 0.1, cap: 'n = 10, p = 0,7' },
+  a2b:  { values: binom(10, 0.5), yMax: 0.3, yStep: 0.1, cap: 'n = 10, p = 0,5: symmetrisch zu k = 5' },
+  a2d:  { values: binom(10, 0.3), kMax: 50, yMax: 0.3, yStep: 0.1, extra: binom(50, 0.3), cap: 'p = 0,3: blau n = 10, orange n = 50 (gleiche Achsen)' },
+  a3A:  { values: binom(20, 0.8), kMax: 40, yMax: 0.25, yStep: 0.05, label: 'A = (4)', cap: 'n = 20, p = 0,8' },
+  a3B:  { values: binom(40, 0.5), kMax: 40, yMax: 0.25, yStep: 0.05, label: 'B = (3)', cap: 'n = 40, p = 0,5' },
+  a3C:  { values: binom(20, 0.2), kMax: 40, yMax: 0.25, yStep: 0.05, label: 'C = (2)', cap: 'n = 20, p = 0,2' },
+  a3D:  { values: binom(20, 0.5), kMax: 40, yMax: 0.25, yStep: 0.05, label: 'D = (1)', cap: 'n = 20, p = 0,5' },
+};
+
+document.querySelectorAll('[data-fig]').forEach(el => {
+  const f = FIGS[el.dataset.fig];
+  let svg;
+  if (f.extra) {
+    // zwei Verteilungen in einem Bild: n = 50 orange dahinter, n = 10 blau
+    svg = hist(f.extra, { ...f, hi: () => true });
+    const blau = hist(f.values, f);
+    // blaue Balken über die orangen legen
+    const rects = blau.match(/<rect[^>]*\/>/g).join('');
+    svg = svg.replace('</svg>', rects + '</svg>');
+  } else {
+    svg = hist(f.values, f);
+  }
+  el.innerHTML = svg + `<div class="cap">${f.cap}</div>`;
+});
+
+/* ── Lehrermodus: QR-Codes ── */
+if (new URLSearchParams(location.search).has('lehrer')) document.getElementById('qr').hidden = false;
+</script>
+</body>
+</html>

@@ -16,6 +16,9 @@ Absprachen zur Reihe und zum Tool `binomialverteilung.html`.
 ## Links
 
 - Erarbeitungsseite: https://uhlenbrauck.github.io/unterricht/mathe/q2/binomialverteilung-erarbeitung.html
+- Lösungsseite (nicht verlinkt): https://uhlenbrauck.github.io/unterricht/mathe/q2/binomialverteilung-loesungen.html
+  (Sprungziele `#aufgabe1` … `#aufgabe5`, QR-Codes in `qr/loesungen/binomialverteilung-aufgabeN.png/.svg`,
+  auf der Seite mit `?lehrer`). Später ggf. verlinken, z. B. zur Wiederholung.
   (Sprungziele `#aufgabe1` … `#aufgabe5`)
 - Tool: https://uhlenbrauck.github.io/unterricht/mathe/q2/binomialverteilung.html mit `#lesen`, `#erkunden`, `#zuordnen`, `#pruefen`, `#schaetzen`
 - Lehrermodus: `…/binomialverteilung.html?lehrer#erkunden`
