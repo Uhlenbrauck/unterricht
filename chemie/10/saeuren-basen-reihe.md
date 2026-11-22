@@ -37,6 +37,7 @@ Absprachen zur Reihe und zu den Materialien in `chemie/10/`.
 
 **Noch nicht erprobt.** Mengen sind abgeschätzt und werden mit den S getestet.
 Die Erarbeitungsseite ist so gebaut, dass sie auch ohne Versuch nur mit der Animation funktioniert.
+Die Versuchsvorschrift für die S steht auf der Erarbeitungsseite im Design der Arbeitsblätter (`assets/versuch.css`).
 
 ### Vorbereitung durch die Lehrkraft
 
@@ -50,9 +51,13 @@ Alginatkugeln:
 - **Gefäß A:** 50 mL Alginatlösung mit Urease verrühren (etwa 0,1–0,2 g Urease;
   ersatzweise 2–3 g fein gemahlenes Sojabohnenmehl)
 - **Gefäß B:** 50 mL Alginatlösung ohne Urease (Kontrolle)
-- Jeweils mit Einwegspritze oder Pipette in Calciumchlorid-Lösung (5 g in 500 mL) tropfen,
-  10 min härten lassen, abgießen, mit Wasser spülen, in wenig Wasser aufbewahren
+- Jeweils mit Einwegspritze oder Pipette in Calciumchlorid-Lösung tropfen (5 g CaCl₂ wasserfrei bzw.
+  6,6 g CaCl₂ · 2 H₂O in 500 mL, etwa 1 %), 10 min härten lassen, abgießen, mit Wasser spülen,
+  in wenig Wasser aufbewahren. Die Calcium-Ionen vernetzen die Alginat-Ketten, die Tropfen werden zu Gelkugeln.
+- Ersatz für Calciumchlorid: Calciumlactat (kein Gefahrstoff), für dieselbe Calcium-Konzentration
+  etwa 14 g Calciumlactat-Pentahydrat in 500 mL.
 - Am besten am Versuchstag herstellen. Haltbarkeit im Kühlschrank ungetestet.
+- Kugeln **nicht** in phosphat- oder citrathaltigen Lösungen aufbewahren: Diese binden Calcium, die Kugeln lösen sich auf.
 - Gefahrstoffe: Calciumchlorid GHS07 (H319). Alle übrigen Stoffe in diesen Konzentrationen kein Gefahrstoff;
   Universalindikator laut Etikett (enthält meist Ethanol).
 

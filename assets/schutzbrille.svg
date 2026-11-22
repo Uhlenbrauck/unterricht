@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Schutzbrille tragen">
+  <!-- Gebotszeichen „Augenschutz benutzen“ (vereinfachte eigene Zeichnung nach ISO 7010 M004) -->
+  <circle cx="50" cy="50" r="48" fill="#ffffff"/>
+  <circle cx="50" cy="50" r="45" fill="#1f73b7"/>
+  <g fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Kopf -->
+    <path d="M30 44 C29 26 40 18 50 18 C60 18 71 26 70 44"/>
+    <path d="M30 52 C30 66 38 80 50 82 C62 80 70 66 70 52"/>
+    <!-- Haare -->
+    <path d="M34 30 C40 24 46 28 50 23 C54 28 60 24 66 30"/>
+    <!-- Ohren -->
+    <path d="M30 46 C25 46 25 56 30 57"/>
+    <path d="M70 46 C75 46 75 56 70 57"/>
+    <!-- Mund -->
+    <path d="M44 70 C48 72 52 72 56 70"/>
+  </g>
+  <!-- Schutzbrille -->
+  <g fill="#1f73b7" stroke="#ffffff" stroke-width="3.2" stroke-linejoin="round">
+    <path d="M24 42 H48 V54 C48 58 45 60 41 60 H31 C27 60 24 58 24 54 Z"/>
+    <path d="M52 42 H76 V54 C76 58 73 60 69 60 H59 C55 60 52 58 52 54 Z"/>
+  </g>
+  <path d="M48 46 H52" stroke="#ffffff" stroke-width="3.2"/>
+</svg>

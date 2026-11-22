@@ -126,6 +126,7 @@
 
   .eq { font-size: 17px; white-space: nowrap; }
 </style>
+<link rel="stylesheet" href="../../assets/versuch.css">
 </head>
 <body>
 
@@ -159,32 +160,97 @@
         Die Aufgaben sind für beide Wege gleich.
       </p>
 
-      <h3>Chemikalien und Gefahren</h3>
-      <table>
-        <tr><th>Stoff</th><th>Gefahren</th></tr>
-        <tr><td>Lösung „Magensäure“: verdünnte Salzsäure (<i>c</i>&nbsp;=&nbsp;0,001&nbsp;mol/L) mit Harnstoff und Universalindikator</td>
-            <td>Salzsäure und Harnstoff in dieser Konzentration: kein Gefahrstoff. Universalindikator: Hinweise auf dem Etikett beachten.</td></tr>
-        <tr><td>Alginatkugeln <strong>mit</strong> Urease (Gefäß A) und <strong>ohne</strong> Urease (Gefäß B)</td>
-            <td>kein Gefahrstoff</td></tr>
-      </table>
+      <div class="versuch">
+        <div class="v-kasten v-titel">
+          <h3>Ein „Bakterium“ in der „Magensäure“</h3>
+          <div class="v-gebote"><img src="../../assets/schutzbrille.svg" alt="Schutzbrille tragen"></div>
+        </div>
 
-      <h3>Material</h3>
-      <p>2 Petrischalen, Löffelspatel, weißes Blatt Papier, Schutzbrille, iPad (für Fotos)</p>
+        <div class="v-zwei">
+          <div class="v-kasten">
+            <h4>Chemikalien</h4>
+            <ul class="v-liste v-chemikalien">
+              <li><span>Lösung „Magensäure“: verd. Salzsäure (<i>c</i> = 0,001 mol/L) mit Harnstoff und Universalindikator</span><span></span></li>
+              <li><span>Alginatkugeln <b>mit</b> Urease (Gefäß A)</span><span></span></li>
+              <li><span>Alginatkugeln <b>ohne</b> Urease (Gefäß B)</span><span></span></li>
+            </ul>
+          </div>
+          <div class="v-kasten">
+            <h4>Material</h4>
+            <ul class="v-liste">
+              <li>2 Petrischalen</li>
+              <li>Löffelspatel</li>
+              <li>weißes Blatt Papier</li>
+              <li>Folienstift</li>
+              <li>iPad (Kamera)</li>
+            </ul>
+          </div>
+        </div>
 
-      <h3>Durchführung</h3>
-      <ol class="steps">
-        <li>Setze die Schutzbrille auf. Lege das weiße Blatt unter die beiden Petrischalen und beschrifte sie mit A und B.</li>
-        <li>Fülle beide Schalen etwa 0,5&nbsp;cm hoch mit der Lösung „Magensäure“. Notiere ihre Farbe.</li>
-        <li>Lege mit dem Löffelspatel 3 Kugeln aus Gefäß A in Schale A und 3 Kugeln aus Gefäß B in Schale B.
-            Die Kugeln sollen sich nicht berühren. Rühre und schüttle danach nicht mehr.</li>
-        <li>Beobachte etwa 15 Minuten. Fotografiere beide Schalen von oben, wenn du die Kugeln hineinlegst, und dann alle 3 Minuten.</li>
-      </ol>
+        <div class="v-kasten v-durchfuehrung">
+          <h4>Durchführung</h4>
+          <figure class="v-skizze" aria-label="Versuchsskizze: zwei Petrischalen A und B auf weißem Papier">
+            <svg viewBox="0 0 300 190" xmlns="http://www.w3.org/2000/svg">
+              <!-- weißes Blatt -->
+              <polygon points="18,112 252,112 286,176 -2,176" fill="#fff" stroke="#1a1a18" stroke-width="1.2" transform="translate(8,0)"/>
+              <!-- Schale A -->
+              <g transform="translate(78,140)">
+                <ellipse cx="0" cy="6" rx="58" ry="17" fill="#fff" stroke="#1a1a18" stroke-width="1.5"/>
+                <path d="M-58 6 V-2 M58 6 V-2" stroke="#1a1a18" stroke-width="1.5"/>
+                <ellipse cx="0" cy="-2" rx="58" ry="17" fill="#f5a35c" fill-opacity=".85" stroke="#1a1a18" stroke-width="1.5"/>
+                <circle cx="-22" cy="-2" r="5" fill="#fff" fill-opacity=".8" stroke="#1a1a18"/>
+                <circle cx="6" cy="-8" r="5" fill="#fff" fill-opacity=".8" stroke="#1a1a18"/>
+                <circle cx="24" cy="3" r="5" fill="#fff" fill-opacity=".8" stroke="#1a1a18"/>
+                <text x="0" y="34" text-anchor="middle" font-family="Times New Roman, serif" font-size="16" font-weight="700">A</text>
+              </g>
+              <!-- Schale B -->
+              <g transform="translate(214,140)">
+                <ellipse cx="0" cy="6" rx="58" ry="17" fill="#fff" stroke="#1a1a18" stroke-width="1.5"/>
+                <path d="M-58 6 V-2 M58 6 V-2" stroke="#1a1a18" stroke-width="1.5"/>
+                <ellipse cx="0" cy="-2" rx="58" ry="17" fill="#f5a35c" fill-opacity=".85" stroke="#1a1a18" stroke-width="1.5"/>
+                <circle cx="-20" cy="-4" r="5" fill="#fff" fill-opacity=".8" stroke="#1a1a18"/>
+                <circle cx="8" cy="2" r="5" fill="#fff" fill-opacity=".8" stroke="#1a1a18"/>
+                <circle cx="26" cy="-8" r="5" fill="#fff" fill-opacity=".8" stroke="#1a1a18"/>
+                <text x="0" y="34" text-anchor="middle" font-family="Times New Roman, serif" font-size="16" font-weight="700">B</text>
+              </g>
+              <!-- Gefäß A mit Kugeln und Löffelspatel -->
+              <g transform="translate(40,18)">
+                <path d="M0 0 V44 Q0 52 8 52 H40 Q48 52 48 44 V0" fill="#fff" stroke="#1a1a18" stroke-width="1.5"/>
+                <path d="M2 30 H46" stroke="#9cc9e8" stroke-width="1"/>
+                <rect x="2" y="30" width="44" height="20" fill="#cfe6f5" opacity=".7"/>
+                <circle cx="14" cy="44" r="4.5" fill="#fff" stroke="#1a1a18"/><circle cx="26" cy="46" r="4.5" fill="#fff" stroke="#1a1a18"/><circle cx="36" cy="42" r="4.5" fill="#fff" stroke="#1a1a18"/>
+                <text x="24" y="-5" text-anchor="middle" font-family="Times New Roman, serif" font-size="14" font-weight="700">A</text>
+              </g>
+              <!-- Löffelspatel auf dem Weg zur Schale A -->
+              <g transform="translate(112,64) rotate(18)">
+                <rect x="0" y="-2" width="62" height="4" rx="2" fill="#bfc5c9" stroke="#1a1a18" stroke-width="1"/>
+                <ellipse cx="-6" cy="0" rx="9" ry="5" fill="#bfc5c9" stroke="#1a1a18" stroke-width="1"/>
+                <circle cx="-6" cy="-4" r="4.5" fill="#fff" stroke="#1a1a18"/>
+              </g>
+              <path d="M100 64 Q86 90 84 118" fill="none" stroke="#1a1a18" stroke-width="1.3" marker-end="url(#pfeil)"/>
+              <defs><marker id="pfeil" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#1a1a18" stroke-width="1.3"/></marker></defs>
+            </svg>
+          </figure>
+          <p><b>Vorbereitung</b>: Lege das weiße Blatt Papier auf den Tisch und stelle beide Petrischalen darauf. Beschrifte die Schalen mit A und B.</p>
+          <ol>
+            <li>Fülle beide Petrischalen etwa 0,5 cm hoch mit der Lösung „Magensäure“. <em>Notiere die Farbe der Lösung.</em></li>
+            <li>Lege mit dem Löffelspatel 3 Kugeln aus Gefäß A in Schale A und 3 Kugeln aus Gefäß B in Schale B.
+              Die Kugeln sollen sich nicht berühren. Rühre und schüttle danach nicht mehr.</li>
+            <li><em>Fotografiere beide Schalen sofort von oben und danach alle 3 Minuten, insgesamt etwa 15 Minuten lang.
+              Beobachte die Farbe der Lösung um die Kugeln herum.</em></li>
+          </ol>
+        </div>
 
-      <h3>Entsorgung</h3>
-      <p>Kugeln in den Restmüll, Lösung mit viel Wasser in den Ausguss.</p>
+        <div class="v-kasten v-entsorgung">
+          <h4>Entsorgung</h4>
+          <ul class="v-liste">
+            <li>Die Kugeln kommen in den Restmüll.</li>
+            <li>Die Lösung kann mit viel Wasser in den Ausguss gegeben werden.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
-
   <!-- ───────────────────────── Aufgabe 1 ───────────────────────── -->
   <section id="aufgabe1">
     <div class="work">

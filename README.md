@@ -20,7 +20,7 @@ qr/<kennung>.png/svg  QR-Code zu jeder Hilfekarte (erzeugt)
 hilfen/*.md           Quellen der Hilfekarten
 hilfen/bilder/        Bilder für Hilfekarten
 hilfen/UEBERSICHT.md  Liste aller Hilfekarten mit Adresse (erzeugt)
-assets/               gemeinsames Design
+assets/               gemeinsames Design (hilfe.css, versuch.css + Vorlage, GHS-Piktogramme, Schutzbrille)
 tools/hilfen.py       erzeugt Hilfekarten und QR-Codes
 ```
 

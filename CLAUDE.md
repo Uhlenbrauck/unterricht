@@ -78,6 +78,21 @@ Aufbau des Repos: siehe `README.md`.
   gewölbt) mit Lupenkreis, der über zwei Linien mit einem Punkt im Glas verbunden ist.
   Eis als gestapelte Eiswürfel, Wasser hellblau, Gas als kleine Kreise.
 
+## Versuchsvorschriften
+
+- Versuchsvorschriften auf Seiten im Repo im **Design von Kais Arbeitsblättern**
+  (Vorbild: AB 04.7 „Veranschaulichung des pH-Wertes“, Station 7): `assets/versuch.css`,
+  Vorlage zum Kopieren `assets/versuch-vorlage.html`.
+- Aufbau: dicker Rahmen um alles; Titelkasten mit Gebotszeichen rechts (Schutzbrille `assets/schutzbrille.svg`);
+  zwei Kästen nebeneinander **Chemikalien** (Kästchen zum Abhaken, GHS-Piktogramme rechts in eigener Spalte,
+  `assets/ghs/`) und **Material** (Kästchen); Kasten **Durchführung** mit fett gesetzter **Vorbereitung**,
+  nummerierten Schritten und Versuchsskizze rechts; Beobachtungs- und Messaufträge *kursiv*
+  („Vergleiche …“, „Notiere …“); Kasten **Entsorgung** mit Überschrift links und Kästchen rechts.
+  Schrift serif (wie Times New Roman auf dem AB).
+- Nur GHS-Piktogramme, keine H-Sätze im Kasten. Stoffe ohne Gefahrstoffkennzeichnung ohne Piktogramm.
+- Versuchsskizzen als eigenes SVG (Strichzeichnung, Flüssigkeiten farbig), keine fremden Abbildungen.
+- Mengen, die noch nicht erprobt sind, in der Reihen-Notiz kennzeichnen.
+
 ## Hilfekarten
 
 - **Eine Seite pro Karte**, jede mit eigenem QR-Code. Karten verlinken nicht aufeinander,
