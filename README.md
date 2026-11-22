@@ -33,7 +33,7 @@ tools/hilfen.py       erzeugt Hilfekarten und QR-Codes
 - Karten schreiben: in `hilfen/<thema>.md` (Format siehe `tools/hilfen.py`), dann
 
   ```
-  pip install markdown segno
+  pip install markdown segno pillow
   python3 tools/hilfen.py
   ```
 
