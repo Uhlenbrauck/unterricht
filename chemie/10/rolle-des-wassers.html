@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Die Rolle des Wassers bei Säure-Base-Reaktionen – Material 6</title>
+<!--
+  Chemie 10, Säuren und Basen, Plan 2, Auftrag 9 (Zusatz): Material 6.
+  Wasser als Ampholyt. Versuch ohne Ammoniak (Zitronensäure, Natron).
+  Erwartungshorizont NICHT im Repo (öffentlich), sondern in Kais Doc.
+  Sprungziele #versuch, #info, #aufgaben.
+-->
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #f7f6f2;
+    --surface: #ffffff;
+    --border:  #d9d6cc;
+    --text:    #1a1a18;
+    --muted:   #6b6960;
+    --accent:  #2d5a3d;
+    --accent-lt: #e8f0eb;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  header { background: var(--accent); color: #fff; padding: 18px 20px 16px; }
+  header .eyebrow { font-size: 13px; opacity: .8; }
+  header h1 { font-size: clamp(22px, 3.2vw, 30px); font-weight: 600; line-height: 1.25; }
+
+  nav {
+    position: sticky; top: 0; z-index: 5;
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 8px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  nav a {
+    min-height: 44px; display: inline-flex; align-items: center;
+    padding: 0 18px; border-radius: 22px;
+    border: 2px solid var(--border); background: var(--surface);
+    color: var(--text); text-decoration: none; font-size: 16px;
+  }
+
+  main { max-width: 980px; margin: 0 auto; padding: 16px 20px 60px; }
+  section { margin-bottom: 28px; scroll-margin-top: 70px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+
+  h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  h3 { font-size: 16px; font-weight: 600; margin: 14px 0 6px; }
+  p + p { margin-top: 8px; }
+  .intro { margin-bottom: 12px; }
+
+  ol.steps { padding-left: 24px; }
+  ol.steps li { margin: 4px 0; }
+
+  ol.items { list-style: none; counter-reset: item; }
+  ol.items > li {
+    counter-increment: item; position: relative;
+    padding: 10px 0 10px 34px; border-top: 1px solid var(--border);
+  }
+  ol.items > li::before {
+    content: counter(item) ".";
+    position: absolute; left: 0; top: 10px;
+    font-weight: 700; color: var(--accent);
+  }
+
+  .op { font-weight: 700; }
+  .badge {
+    display: inline-block; font-size: 12px; font-weight: 400;
+    padding: 1px 8px; border-radius: 10px;
+    background: var(--accent-lt); color: var(--accent); vertical-align: 1px;
+  }
+
+  details.tip { margin-top: 6px; }
+  details.tip summary {
+    display: inline-flex; align-items: center; min-height: 44px;
+    padding: 0 16px; border-radius: 22px;
+    border: 2px solid var(--border); background: var(--bg);
+    color: var(--accent); font-size: 15px; font-weight: 600;
+    cursor: pointer; list-style: none;
+  }
+  details.tip summary::-webkit-details-marker { display: none; }
+  details.tip summary::after { content: " ▾"; margin-left: 4px; }
+  details.tip[open] summary::after { content: " ▴"; }
+  details.tip p { margin-top: 6px; padding: 10px 12px; background: var(--accent-lt); border-radius: 8px; font-size: 15px; }
+
+  .warn { margin: 10px 0; padding: 10px 12px; background: #fff4e0; border-left: 4px solid #e07b1a; border-radius: 6px; font-size: 15px; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 15px; margin: 6px 0; }
+  th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; vertical-align: middle; }
+  th { background: var(--bg); }
+  td img { width: 40px; height: 40px; vertical-align: middle; margin-right: 4px; }
+
+  .eq { display: block; margin: 8px 0; padding: 8px 12px; background: var(--accent-lt); border-radius: 8px; font-size: 18px; }
+  .def { margin-top: 10px; padding: 10px 12px; border-left: 4px solid var(--accent); background: var(--bg); border-radius: 6px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Chemie 10 · Säuren und Basen · Plan 2, Material 6</div>
+  <h1>Die Rolle des Wassers bei Säure-Base-Reaktionen</h1>
+</header>
+
+<nav aria-label="Abschnitte">
+  <a href="#versuch">Versuch</a>
+  <a href="#info">Info</a>
+  <a href="#aufgaben">Aufgaben</a>
+</nav>
+
+<main>
+
+  <p class="intro">
+    In Plan 2 hast du zwei Reaktionen mit Wasser kennengelernt: Chlorwasserstoff bildet mit Wasser Salzsäure,
+    Ammoniak bildet mit Wasser Ammoniak-Lösung. Hier untersuchst du, welche Rolle das Wasser-Molekül dabei jeweils spielt.
+  </p>
+
+  <!-- ───────────────────────── Versuch ───────────────────────── -->
+  <section id="versuch">
+    <div class="card">
+      <h2>Versuch: Trocken oder feucht?</h2>
+      <p class="warn"><strong>Schutzbrille tragen!</strong></p>
+
+      <h3>Chemikalien und Gefahren</h3>
+      <table>
+        <tr><th>Stoff</th><th>Gefahren</th></tr>
+        <tr><td>Zitronensäure (fest)</td><td><img src="../9/bilder/ghs/ghs_07_exclam.png" alt="GHS07">Achtung: verursacht schwere Augenreizung.</td></tr>
+        <tr><td>Natron (Natriumhydrogencarbonat, fest)</td><td>kein Gefahrstoff</td></tr>
+      </table>
+
+      <h3>Material</h3>
+      <p>2 Uhrgläser, kleines Becherglas, Spatel, Pinzette, Universalindikatorpapier, Spritzflasche mit destilliertem Wasser</p>
+
+      <h3>Durchführung</h3>
+      <ol class="steps">
+        <li><strong>Teil A:</strong> Gib eine Spatelspitze Zitronensäure auf ein Uhrglas. Lege ein <em>trockenes</em> Indikatorpapier mit der Pinzette auf die Kristalle und drücke es leicht an.</li>
+        <li>Wiederhole Schritt 1 mit einem Indikatorpapier, das du vorher mit einem Tropfen Wasser <em>angefeuchtet</em> hast.</li>
+        <li><strong>Teil B:</strong> Mische im trockenen Becherglas je eine Spatelspitze Zitronensäure und Natron. Beobachte etwa eine Minute.</li>
+        <li>Gib nun einige Milliliter Wasser dazu und beobachte erneut.</li>
+      </ol>
+
+      <h3>Entsorgung</h3>
+      <p>Alle Reste mit viel Wasser in den Ausguss, Indikatorpapier in den Restmüll.</p>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── Info ───────────────────────── -->
+  <section id="info">
+    <div class="card">
+      <h2>Info: Wasser – mal Säure, mal Base</h2>
+      <p>Nach Brønsted ist eine <strong>Säure</strong> ein Protonendonator und eine <strong>Base</strong> ein Protonenakzeptor.
+        Ob ein Teilchen als Säure oder als Base reagiert, hängt vom Reaktionspartner ab. Das Wasser-Molekül zeigt das besonders deutlich.</p>
+
+      <h3>Reaktion 1: Chlorwasserstoff und Wasser</h3>
+      <span class="eq">HCl + H<sub>2</sub>O &nbsp;→&nbsp; H<sub>3</sub>O<sup>+</sup> + Cl<sup>−</sup></span>
+      <p>Das Chlorwasserstoff-Molekül gibt ein Proton ab. Ein freies Elektronenpaar am Sauerstoff-Atom des Wasser-Moleküls bindet dieses Proton. Es entsteht ein Oxonium-Ion.</p>
+
+      <h3>Reaktion 2: Ammoniak und Wasser</h3>
+      <span class="eq">NH<sub>3</sub> + H<sub>2</sub>O &nbsp;⇌&nbsp; NH<sub>4</sub><sup>+</sup> + OH<sup>−</sup></span>
+      <p>Jetzt gibt das Wasser-Molekül ein Proton ab. Das freie Elektronenpaar am Stickstoff-Atom des Ammoniak-Moleküls bindet es. Es entstehen ein Ammonium-Ion und ein Hydroxid-Ion.</p>
+
+      <p class="def"><strong>Ampholyt:</strong> Teilchen, die je nach Reaktionspartner als Säure oder als Base reagieren können, nennt man <strong>Ampholyte</strong> (griech. <em>amphoteros</em> = beide).</p>
+
+      <h3>Autoprotolyse</h3>
+      <p>Auch Wasser-Moleküle untereinander tauschen Protonen aus. Das geschieht nur bei einem winzigen Bruchteil der Moleküle: Bei 25&nbsp;°C ist es etwa eines von 550 Millionen.</p>
+      <span class="eq">H<sub>2</sub>O + H<sub>2</sub>O &nbsp;⇌&nbsp; H<sub>3</sub>O<sup>+</sup> + OH<sup>−</sup></span>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── Aufgaben ───────────────────────── -->
+  <section id="aufgaben">
+    <div class="card">
+      <h2>Aufgaben</h2>
+      <ol class="items">
+        <li><span class="op">Führe</span> den Versuch <span class="op">durch</span> und notiere deine Beobachtungen in einer Tabelle (Teil A: trocken / feucht, Teil B: ohne / mit Wasser).</li>
+        <li><span class="op">Erkläre</span> deine Beobachtungen. <span class="op">Begründe</span> damit, warum du das Indikatorpapier in Auftrag 2 des Plans anfeuchten musstest.
+          <details class="tip"><summary>Tipp</summary><p>Welche Teilchen zeigt der Indikator eigentlich an? Wann entstehen diese Teilchen?</p></details>
+        </li>
+        <li><span class="op">Zeichne</span> die Reaktionen 1 und 2 aus dem Infokasten mit Valenzstrichformeln. <span class="op">Markiere</span> jeweils mit einem Pfeil, welches Proton von welchem Teilchen zu welchem freien Elektronenpaar wandert.
+          <span class="op">Beschrifte</span> Protonendonator und Protonenakzeptor.</li>
+        <li><span class="op">Erläutere</span> mithilfe deiner Zeichnungen, warum man Wasser als Ampholyt bezeichnet.</li>
+        <li>Reines Wasser leitet den elektrischen Strom nur sehr schwach, Ammoniak-Lösung deutlich besser (vgl. Auftrag 6 des Plans). <span class="op">Erkläre</span> beide Befunde auf Teilchenebene.
+          <details class="tip"><summary>Tipp</summary><p>Strom wird in Lösungen von beweglichen Ionen geleitet. Woher kommen die Ionen im reinen Wasser, und wie viele sind es?</p></details>
+        </li>
+        <li><strong>Transfer:</strong> Im Magen trifft das Ammoniak von <em>Helicobacter pylori</em> auf Magensäure. <span class="op">Nenne</span> das Teilchen der Magensäure, das mit dem Ammoniak reagiert, und <span class="op">formuliere</span> die Reaktionsgleichung.
+          <span class="op">Beschreibe</span>, welche Rolle das Wasser bei der Entstehung dieses Teilchens gespielt hat.</li>
+        <li><span class="badge">Zusatzaufgabe</span> Bullrich-Salz gegen Sodbrennen enthält Hydrogencarbonat-Ionen (HCO<sub>3</sub><sup>−</sup>). <span class="op">Prüfe</span>, ob auch dieses Ion ein Ampholyt ist.
+          <span class="op">Formuliere</span> dazu eine Reaktion mit einem Oxonium-Ion und eine mit einem Hydroxid-Ion.</li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

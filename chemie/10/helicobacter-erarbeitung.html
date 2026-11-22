@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Wie überlebt Helicobacter pylori in der Magensäure? – Material 5</title>
+<!--
+  Chemie 10, Säuren und Basen, Plan 2, Material 5 (ersetzt AB 19 mit Ammoniak-Schaumstoff-Versuch).
+  Versuch mit Urease-Alginatkugeln ODER Animation helicobacter.html (Teil 1 #modell, Teil 2 #teilchen).
+  Sprungziele #versuch, #aufgabe1 … #aufgabe5. Lösungen: helicobacter-loesungen.html (nicht verlinkt).
+-->
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #f7f6f2;
+    --surface: #ffffff;
+    --border:  #d9d6cc;
+    --text:    #1a1a18;
+    --muted:   #6b6960;
+    --accent:  #2d5a3d;
+    --accent-lt: #e8f0eb;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  header { background: var(--accent); color: #fff; padding: 18px 20px 16px; }
+  header .eyebrow { font-size: 13px; opacity: .8; }
+  header h1 { font-size: clamp(22px, 3.2vw, 30px); font-weight: 600; line-height: 1.25; }
+
+  nav {
+    position: sticky; top: 0; z-index: 5;
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 8px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  nav a {
+    min-height: 44px; display: inline-flex; align-items: center;
+    padding: 0 18px; border-radius: 22px;
+    border: 2px solid var(--border); background: var(--surface);
+    color: var(--text); text-decoration: none; font-size: 16px;
+  }
+
+  main { max-width: 1400px; margin: 0 auto; padding: 16px 20px 60px; }
+  section { margin-bottom: 40px; scroll-margin-top: 70px; }
+
+  .work {
+    display: grid;
+    grid-template-columns: minmax(320px, 1fr) minmax(0, 1.55fr);
+    gap: 20px;
+    align-items: start;
+  }
+  .tasks { grid-column: 1; grid-row: 1; }
+  .tool  { grid-column: 2; grid-row: 1; position: sticky; top: 70px; }
+  @media (max-width: 960px) {
+    .work { display: flex; flex-direction: column; gap: 14px; }
+    .tool { position: static; width: 100%; }
+    .tasks { width: 100%; }
+  }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .card.wide { max-width: 980px; }
+
+  h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  h2 .nr { color: var(--accent); }
+  h3 { font-size: 16px; font-weight: 600; margin: 14px 0 6px; }
+
+  .intro { margin-bottom: 12px; }
+
+  ol.items { list-style: none; counter-reset: item; }
+  ol.items > li {
+    counter-increment: item; position: relative;
+    padding: 10px 0 10px 34px; border-top: 1px solid var(--border);
+  }
+  ol.items > li::before {
+    content: counter(item, lower-alpha) ")";
+    position: absolute; left: 0; top: 10px;
+    font-weight: 700; color: var(--accent);
+  }
+
+  ol.steps { padding-left: 24px; }
+  ol.steps li { margin: 4px 0; }
+
+  .badge {
+    display: inline-block; font-size: 12px; font-weight: 400;
+    padding: 1px 8px; border-radius: 10px;
+    background: var(--accent-lt); color: var(--accent); vertical-align: 3px;
+  }
+
+  details.tip { margin-top: 6px; }
+  details.tip summary {
+    display: inline-flex; align-items: center; min-height: 44px;
+    padding: 0 16px; border-radius: 22px;
+    border: 2px solid var(--border); background: var(--bg);
+    color: var(--accent); font-size: 15px; font-weight: 600;
+    cursor: pointer; list-style: none;
+  }
+  details.tip summary::-webkit-details-marker { display: none; }
+  details.tip summary::after { content: " ▾"; margin-left: 4px; }
+  details.tip[open] summary::after { content: " ▴"; }
+  details.tip p { margin-top: 6px; padding: 10px 12px; background: var(--accent-lt); border-radius: 8px; font-size: 15px; }
+
+  .op { font-weight: 700; }
+
+  .note { margin-top: 12px; padding: 10px 12px; background: var(--accent-lt); border-radius: 8px; font-size: 15px; }
+  .warn { margin: 10px 0; padding: 10px 12px; background: #fff4e0; border-left: 4px solid #e07b1a; border-radius: 6px; font-size: 15px; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 15px; margin: 6px 0; }
+  th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; vertical-align: middle; }
+  th { background: var(--bg); }
+  td img { width: 40px; height: 40px; vertical-align: middle; margin-right: 4px; }
+  .fill td { height: 40px; }
+
+  .frame { width: 100%; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--surface); }
+  iframe { display: block; width: 100%; border: 0; }
+  #t1 iframe { height: clamp(460px, calc(100vh - 120px), 820px); }
+  #t3 iframe { height: clamp(520px, calc(100vh - 110px), 900px); }
+  .open { display: inline-block; margin-top: 6px; font-size: 14px; color: var(--accent); }
+
+  .eq { font-size: 17px; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Chemie 10 · Säuren und Basen · Plan 2, Material 5</div>
+  <h1>Wie überlebt Helicobacter pylori in der Magensäure?</h1>
+</header>
+
+<nav aria-label="Abschnitte">
+  <a href="#versuch">Versuch</a>
+  <a href="#aufgabe1">Aufgabe 1</a>
+  <a href="#aufgabe2">Aufgabe 2</a>
+  <a href="#aufgabe3">Aufgabe 3</a>
+  <a href="#aufgabe4">Aufgabe 4</a>
+  <a href="#aufgabe5">Aufgabe 5</a>
+</nav>
+
+<main>
+
+  <!-- ───────────────────────── Versuch ───────────────────────── -->
+  <section id="versuch">
+    <div class="card wide">
+      <h2>Modellversuch: Ein „Bakterium“ in der „Magensäure“</h2>
+      <p class="intro">
+        <em>Helicobacter pylori</em> bildet das Enzym <strong>Urease</strong>. Im Modellversuch steht eine
+        kleine Kugel aus Alginat-Gel, die Urease enthält, für das Bakterium. Die „Magensäure“ ist verdünnte Salzsäure,
+        in der Harnstoff gelöst ist. Universalindikator zeigt, wie sauer die Lösung ist.
+      </p>
+      <p class="note">
+        Ist der Versuch heute nicht aufgebaut? Dann arbeite mit der <strong>Animation</strong> (Aufgabe 1, Teil 1).
+        Die Aufgaben sind für beide Wege gleich.
+      </p>
+
+      <h3>Chemikalien und Gefahren</h3>
+      <table>
+        <tr><th>Stoff</th><th>Gefahren</th></tr>
+        <tr><td>Lösung „Magensäure“: verdünnte Salzsäure (<i>c</i>&nbsp;=&nbsp;0,001&nbsp;mol/L) mit Harnstoff und Universalindikator</td>
+            <td>Salzsäure und Harnstoff in dieser Konzentration: kein Gefahrstoff. Universalindikator: Hinweise auf dem Etikett beachten.</td></tr>
+        <tr><td>Alginatkugeln <strong>mit</strong> Urease (Gefäß A) und <strong>ohne</strong> Urease (Gefäß B)</td>
+            <td>kein Gefahrstoff</td></tr>
+      </table>
+
+      <h3>Material</h3>
+      <p>2 Petrischalen, Löffelspatel, weißes Blatt Papier, Schutzbrille, iPad (für Fotos)</p>
+
+      <h3>Durchführung</h3>
+      <ol class="steps">
+        <li>Setze die Schutzbrille auf. Lege das weiße Blatt unter die beiden Petrischalen und beschrifte sie mit A und B.</li>
+        <li>Fülle beide Schalen etwa 0,5&nbsp;cm hoch mit der Lösung „Magensäure“. Notiere ihre Farbe.</li>
+        <li>Lege mit dem Löffelspatel 3 Kugeln aus Gefäß A in Schale A und 3 Kugeln aus Gefäß B in Schale B.
+            Die Kugeln sollen sich nicht berühren. Rühre und schüttle danach nicht mehr.</li>
+        <li>Beobachte etwa 15 Minuten. Fotografiere beide Schalen von oben, wenn du die Kugeln hineinlegst, und dann alle 3 Minuten.</li>
+      </ol>
+
+      <h3>Entsorgung</h3>
+      <p>Kugeln in den Restmüll, Lösung mit viel Wasser in den Ausguss.</p>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 1 ───────────────────────── -->
+  <section id="aufgabe1">
+    <div class="work">
+      <div class="tool" id="t1">
+        <div class="frame">
+          <iframe src="helicobacter.html?eingebettet#modell" title="Modellversuch"></iframe>
+        </div>
+        <a class="open" href="helicobacter.html#modell" target="_blank">Animation in eigenem Fenster öffnen</a>
+      </div>
+
+      <div class="tasks card">
+        <h2><span class="nr">Aufgabe 1</span> | Was passiert um die Kugel herum?</h2>
+        <p class="intro">
+          <strong>Mit Versuch:</strong> Werte deine Beobachtungen und Fotos aus.<br>
+          <strong>Mit Animation:</strong> Die Animation zeigt eine Petrischale von oben mit einer Kugel <strong>mit</strong> Urease.
+          Tippe auf „Start“. Mit den Schaltern „Harnstoff“ und „Urease“ legst du fest, ob der Stoff im Versuch enthalten ist.
+          Jedes Umschalten startet den Versuch neu.
+        </p>
+        <ol class="items">
+          <li><span class="op">Beschreibe</span> deine Beobachtungen. <span class="op">Fertige</span> eine Skizze der Petrischale von oben <span class="op">an</span>
+            (zu Beginn und nach 15 Minuten) und trage die Indikatorfarben ein.
+            <details class="tip"><summary>Tipp</summary><p>Achte auf die Farbe direkt an der Kugel, in einigen Millimetern Abstand und am Rand der Schale. Wie verändert sich die farbige Zone mit der Zeit?</p></details>
+          </li>
+          <li><span class="op">Gib</span> mithilfe der Farbskala den pH-Wert der Lösung am Rand der Schale und direkt an der Kugel <span class="op">an</span>.
+            <details class="tip"><summary>Tipp</summary><p>Vergleiche die Farben mit der Skala neben der Petrischale (im Versuch: mit der Skala auf der Indikatorflasche). Ein Bereich wie „pH 9 bis 10“ reicht.</p></details>
+          </li>
+          <li><span class="op">Vergleiche</span> die Kugeln mit und ohne Urease. <span class="op">Untersuche</span> mit der Animation außerdem, was passiert, wenn kein Harnstoff in der Lösung ist.
+            <span class="op">Leite</span> daraus <span class="op">ab</span>, welche Stoffe für die Farbänderung nötig sind.
+            <details class="tip"><summary>Tipp</summary><p>Im Versuch: Schale A und B. In der Animation: Schalte nacheinander „Urease“ und „Harnstoff“ aus und starte jeweils neu. Ändere immer nur einen Schalter.</p></details>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 2 ───────────────────────── -->
+  <section id="aufgabe2">
+    <div class="card wide">
+      <h2><span class="nr">Aufgabe 2</span> | Modell und Wirklichkeit</h2>
+      <ol class="items">
+        <li><span class="op">Ordne</span> den Teilen des Modellversuchs die entsprechenden Teile im Magen <span class="op">zu</span>. Übertrage dazu die Tabelle in dein Heft.
+          <table class="fill">
+            <tr><th>Modellversuch</th><th>im Magen</th></tr>
+            <tr><td>verdünnte Salzsäure</td><td></td></tr>
+            <tr><td>Alginatkugel</td><td></td></tr>
+            <tr><td>Urease in der Kugel</td><td></td></tr>
+            <tr><td>Harnstoff in der Lösung</td><td></td></tr>
+          </table>
+          <details class="tip"><summary>Tipp</summary><p>Schau dir deine Notizen zum Film aus Auftrag 1 des Plans an. Wo lebt das Bakterium, und woher kommt der Harnstoff?</p></details>
+        </li>
+        <li><span class="op">Nenne</span> mindestens zwei Unterschiede zwischen dem Modell und der Wirklichkeit.
+          <details class="tip"><summary>Tipp</summary><p>Vergleiche Größen (Kugel und Bakterium), den pH-Wert der „Magensäure“ im Modell mit dem pH-Wert echter Magensäure und den Ort, an dem die Urease sitzt.</p></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 3 ───────────────────────── -->
+  <section id="aufgabe3">
+    <div class="work">
+      <div class="tool" id="t3">
+        <div class="frame">
+          <iframe src="helicobacter.html?eingebettet#teilchen" title="Teilchenebene"></iframe>
+        </div>
+        <a class="open" href="helicobacter.html#teilchen" target="_blank">Animation in eigenem Fenster öffnen</a>
+      </div>
+
+      <div class="tasks card">
+        <h2><span class="nr">Aufgabe 3</span> | Was passiert an der Kugeloberfläche?</h2>
+        <p class="intro">
+          Die Animation zeigt die Petrischale von oben (klein). Die Lupe vergrößert die Stelle am Rand der Kugel,
+          an der die Urease sitzt. Mit „Zeitlupe“ kannst du die Reaktionen langsamer ablaufen lassen, mit „Neu“ beginnt
+          alles von vorn.
+        </p>
+        <ol class="items">
+          <li><span class="op">Beschreibe</span>, was an der Urease mit den Harnstoff-Molekülen geschieht.
+            <span class="op">Formuliere</span> die Reaktionsgleichung für die Spaltung von Harnstoff, CO(NH<sub>2</sub>)<sub>2</sub>.
+            <p class="note">Bei dieser Reaktion reagiert auch ein Wasser-Molekül mit. Es ist in der Animation nicht dargestellt.</p>
+            <details class="tip"><summary>Tipp</summary><p>Zähle, welche Teilchen aus einem Harnstoff-Molekül entstehen. Prüfe dann mit dem zusätzlichen Wasser-Molekül, ob auf beiden Seiten gleich viele Atome jeder Sorte stehen.</p></details>
+          </li>
+          <li>Beobachte in Zeitlupe, was passiert, wenn ein Ammoniak-Molekül auf ein Oxonium-Ion trifft.
+            <span class="op">Beschreibe</span> den Vorgang, <span class="op">formuliere</span> die Reaktionsgleichung und
+            <span class="op">kennzeichne</span> Protonendonator und Protonenakzeptor.
+            <details class="tip"><summary>Tipp</summary><p>Verfolge das orange markierte H. Von welchem Teilchen kommt es, und an welches Elektronenpaar wird es gebunden? Welche Teilchen sind danach entstanden?</p></details>
+          </li>
+          <li><span class="op">Beschreibe</span>, wie sich die Anzahl der Oxonium-Ionen und der Ammoniak-Moleküle in der Lupe mit der Zeit verändert.
+            <span class="op">Erkläre</span> damit die Farbe der Lösung direkt an der Kugel.
+            <details class="tip"><summary>Tipp</summary><p>Welche Teilchen sind für eine saure Lösung typisch, welche für eine alkalische? Vergleiche den Anfang der Animation mit dem Zustand nach etwa einer Minute.</p></details>
+          </li>
+          <li><span class="op">Erkläre</span>, warum man die Reaktion aus b) als <strong>Neutralisation</strong> bezeichnet.
+            <span class="op">Erläutere</span>, warum die Lösung an der Kugel trotzdem nicht neutral, sondern alkalisch wird.
+            <details class="tip"><summary>Tipp</summary><p>Was passiert mit den Teilchen, die die Lösung sauer machen? Was passiert, wenn die Urease weiter Ammoniak bildet, obwohl in der Nähe kein Oxonium-Ion mehr da ist?</p></details>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 4 ───────────────────────── -->
+  <section id="aufgabe4">
+    <div class="card wide">
+      <h2><span class="nr">Aufgabe 4</span> | Die Überlebensstrategie</h2>
+      <ol class="items">
+        <li><span class="op">Erkläre</span> mithilfe deiner Ergebnisse aus den Aufgaben 1 bis 3 die Überlebensstrategie von <em>Helicobacter pylori</em> im Magen.
+          Verwende die Fachbegriffe Urease, Harnstoff, Ammoniak, Oxonium-Ion, Protonenübergang und Neutralisation.
+          <details class="tip"><summary>Tipp</summary><p>Gehe Schritt für Schritt vor: Was bildet das Bakterium? Was macht es damit? Was passiert mit der Magensäure in seiner direkten Umgebung? Warum hilft ihm das?</p></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 5 ───────────────────────── -->
+  <section id="aufgabe5">
+    <div class="card wide">
+      <h2><span class="nr">Aufgabe 5</span> | Schemazeichnung <span class="badge">Zusatzaufgabe</span></h2>
+      <ol class="items">
+        <li><span class="op">Erstelle</span> eine Schemazeichnung der Vorgänge an der Oberfläche von <em>Helicobacter pylori</em>, die das Überleben im Magen ermöglichen.
+          Zeichne die Teilchen mit Summenformeln und die Reaktionen mit Pfeilen.
+          <details class="tip"><summary>Tipp</summary><p>Zeichne das Bakterium als Stäbchen. Außen herum: Magensäure mit Oxonium-Ionen. An der Oberfläche: Urease. Zeichne von dort aus die beiden Reaktionen aus Aufgabe 3 und markiere die Zone, in der die Lösung nicht mehr sauer ist.</p></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Helicobacter pylori – Modellversuch und Teilchenebene</title>
+<!--
+  Chemie 10, Säuren und Basen, Plan 2 („So schützt sich Helicobacter pylori“), M5.
+  Teil 1 #modell:   Petrischale mit verdünnter Salzsäure, Harnstoff und Universalindikator,
+                    darin eine Alginatkugel mit Urease (wie im Realversuch). Schalter Harnstoff/Urease.
+  Teil 2 #teilchen: Lupe auf die Kugeloberfläche: Urease spaltet Harnstoff, Ammoniak nimmt Protonen
+                    von Oxonium-Ionen auf.
+  ?eingebettet  ohne Kopfzeile (für helicobacter-erarbeitung.html)
+  ?lehrer       Lehrermodus: Parameter, „Werte kopieren“
+  Absprachen und didaktische Reduktionen: saeuren-basen-reihe.md
+-->
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #f7f6f2;
+    --surface: #ffffff;
+    --border:  #d9d6cc;
+    --text:    #1a1a18;
+    --muted:   #6b6960;
+    --accent:  #2d5a3d;
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  header {
+    padding: 10px 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px 16px;
+    flex-wrap: wrap;
+  }
+
+  header strong { font-size: 15px; font-weight: 600; }
+
+  .tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    border: 2px solid var(--border);
+    border-radius: 22px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .tabs .btn { border: none; border-radius: 0; padding: 0 16px; }
+
+  body.embedded header { display: none; }
+  body.embedded #stage { margin: 0; border-radius: 0; border-left: 0; border-right: 0; border-top: 0; }
+
+  #stage {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+    margin: 8px 16px 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+  .controls {
+    padding: 8px 16px calc(12px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn {
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 22px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .btn[aria-pressed=true], .btn[aria-selected=true] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .readout {
+    min-width: 110px;
+    text-align: center;
+    font-size: 18px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  [hidden] { display: none !important; }
+
+  /* Lehrermodus */
+  #teacher {
+    position: fixed;
+    top: 8px;
+    right: 8px;
+    width: 300px;
+    max-height: calc(100% - 16px);
+    overflow: auto;
+    background: var(--surface);
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.15);
+    z-index: 10;
+  }
+  #teacher summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+  #teacher h3 { font-size: 13px; margin-top: 10px; }
+  #teacher label { display: grid; grid-template-columns: 1fr 90px; gap: 2px 8px; margin-top: 6px; align-items: center; }
+  #teacher label.check { grid-template-columns: 20px 1fr; }
+  #teacher input { width: 100%; font: inherit; padding: 4px; }
+  #teacher .btn { margin-top: 10px; min-height: 34px; font-size: 13px; padding: 0 12px; }
+  #teacher .note { color: var(--muted); margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<header>
+  <strong>Helicobacter pylori</strong>
+  <div class="tabs" role="tablist" aria-label="Teil auswählen">
+    <button class="btn" role="tab" data-part="1">1 Modellversuch</button>
+    <button class="btn" role="tab" data-part="2">2 Teilchenebene</button>
+  </div>
+</header>
+
+<div id="stage">
+  <canvas id="cv"></canvas>
+</div>
+
+<div class="controls" id="ctrl1">
+  <button class="btn" id="play1">▶ Start</button>
+  <button class="btn" id="reset1">↺ Neu</button>
+  <span class="readout" id="time1">0 min</span>
+  <button class="btn" id="tUrea" aria-pressed="true">Harnstoff</button>
+  <button class="btn" id="tUrease" aria-pressed="true">Urease</button>
+</div>
+
+<div class="controls" id="ctrl2" hidden>
+  <button class="btn" id="play2">⏸ Pause</button>
+  <button class="btn" id="slow2" aria-pressed="false">Zeitlupe</button>
+  <button class="btn" id="reset2">↺ Neu</button>
+</div>
+
+<script>
+'use strict';
+
+/* ─────────────────────────────────────────────
+   Einstellungen (im Lehrermodus über ?lehrer veränderbar)
+   ───────────────────────────────────────────── */
+const CFG = {
+  acid: 1e-3,        // c(HCl) in mol/L (pH 3, Soja-Urease verträgt keine stärkere Säure)
+  rate: 1e-4,        // Ammoniak-Bildung in der Kugel in mol/(L·s), nur mit Harnstoff UND Urease
+  diff: 0.03,        // effektiver Diffusionskoeffizient in mm²/s (für alle Teilchen gleich, Reduktion)
+  speed: 30,         // Zeitraffer: Modellsekunden pro echter Sekunde
+  tEnd: 15 * 60,     // Ende der Modellzeit in s
+  dishR: 44,         // Radius der Petrischale in mm
+  beadR: 3,          // Radius der Alginatkugel in mm
+  dx: 0.5,           // Gitterabstand in mm
+  pSpeed: 1,         // Teil 2: Tempo
+};
+
+const $ = id => document.getElementById(id);
+const cv = $('cv'), ctx = cv.getContext('2d');
+let W = 0, H = 0, DPR = 1;
+
+/* ─────────────────────────────────────────────
+   Farben des Universalindikators
+   ───────────────────────────────────────────── */
+const UI_COL = [ // pH 1 … 11
+  [214, 35, 38], [232, 70, 36], [242, 118, 33], [246, 160, 30], [240, 200, 30],
+  [190, 205, 45], [110, 178, 70], [45, 150, 110], [35, 115, 170], [45, 75, 155], [75, 50, 130]
+];
+function phColor(p) {
+  const x = Math.max(1, Math.min(11, p)) - 1, i = Math.min(9, Math.floor(x)), f = x - i;
+  const a = UI_COL[i], b = UI_COL[i + 1];
+  return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+}
+
+/* pH aus Gesamt-Ammoniak T (NH3 + NH4+) bei Chlorid-Konzentration C.
+   Ladungsbilanz: [H3O+] + [NH4+] = [Cl-] + [OH-], pKs(NH4+) = 9,25. Tabelle über u = T/C. */
+const KA = Math.pow(10, -9.25), KW = 1e-14;
+let PH_TAB = null, PH_TAB_C = 0;
+const TAB_MAX = 4, TAB_N = 4000;
+function solvePH(T, C) {
+  let lo = -14, hi = 0;
+  for (let k = 0; k < 50; k++) {
+    const m = (lo + hi) / 2, h = Math.pow(10, m);
+    const f = h + T * h / (h + KA) - C - KW / h;
+    if (f > 0) hi = m; else lo = m;
+  }
+  return -(lo + hi) / 2;
+}
+function buildTab() {
+  PH_TAB = new Float32Array(TAB_N + 1);
+  for (let i = 0; i <= TAB_N; i++) PH_TAB[i] = solvePH(CFG.acid * TAB_MAX * i / TAB_N, CFG.acid);
+  PH_TAB_C = CFG.acid;
+}
+function phOf(T) {
+  if (PH_TAB_C !== CFG.acid) buildTab();
+  const u = T / CFG.acid;
+  if (u >= TAB_MAX) return Math.min(11.5, 9.25 + Math.log10(u - 1));
+  const x = u / TAB_MAX * TAB_N, i = Math.floor(x), f = x - i;
+  return PH_TAB[i] + (PH_TAB[Math.min(TAB_N, i + 1)] - PH_TAB[i]) * f;
+}
+
+/* ─────────────────────────────────────────────
+   Teil 1: Reaktions-Diffusions-Modell in der Petrischale (Gitter 1 mm)
+   ───────────────────────────────────────────── */
+function makeSim() {
+  const N = Math.round(2 * CFG.dishR / CFG.dx) + 3, c = (N - 1) / 2;
+  const s = { N, c, T: new Float32Array(N * N), T2: new Float32Array(N * N),
+              inDish: new Uint8Array(N * N), inBead: new Uint8Array(N * N), t: 0 };
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const r = Math.hypot(x - c, y - c) * CFG.dx;
+    s.inDish[y * N + x] = r <= CFG.dishR ? 1 : 0;
+    s.inBead[y * N + x] = r <= CFG.beadR ? 1 : 0;
+  }
+  return s;
+}
+
+function stepSim(s, dt, source) {
+  const { N, T, T2, inDish, inBead } = s, k = CFG.diff * dt / (CFG.dx * CFG.dx);
+  for (let y = 1; y < N - 1; y++) for (let x = 1; x < N - 1; x++) {
+    const i = y * N + x;
+    if (!inDish[i]) { T2[i] = 0; continue; }
+    const t0 = T[i];
+    // Rand der Schale: kein Fluss nach außen
+    const l = inDish[i - 1] ? T[i - 1] : t0, r = inDish[i + 1] ? T[i + 1] : t0;
+    const u = inDish[i - N] ? T[i - N] : t0, d = inDish[i + N] ? T[i + N] : t0;
+    T2[i] = t0 + k * (l + r + u + d - 4 * t0) + (source && inBead[i] ? CFG.rate * dt : 0);
+  }
+  s.T = T2; s.T2 = T;
+  s.t += dt;
+}
+
+function runSim(s, seconds, source) {
+  const dt = Math.min(1, 0.2 * CFG.dx * CFG.dx / CFG.diff); // stabil: D·dt/dx² ≤ 0,25
+  let rest = seconds;
+  while (rest > 1e-9) { const h = Math.min(dt, rest); stepSim(s, h, source); rest -= h; }
+}
+
+/* Bild der Schale (ein Pixel pro mm, beim Zeichnen geglättet vergrößert) */
+function fieldImage(s, img) {
+  const { N, T, inDish } = s;
+  if (!img.canvas || img.canvas.width !== N) {
+    img.canvas = document.createElement('canvas');
+    img.canvas.width = img.canvas.height = N;
+    img.ctx = img.canvas.getContext('2d');
+    img.data = img.ctx.createImageData(N, N);
+  }
+  const d = img.data.data;
+  for (let i = 0; i < N * N; i++) {
+    const col = phColor(phOf(T[i]));
+    d[4 * i] = col[0]; d[4 * i + 1] = col[1]; d[4 * i + 2] = col[2];
+    d[4 * i + 3] = inDish[i] ? 255 : 0;
+  }
+  img.ctx.putImageData(img.data, 0, 0);
+  return img.canvas;
+}
+
+/* Petrischale von oben zeichnen */
+function drawDish(s, img, cx, cy, R, opt = {}) {
+  const N = s.N, mm = R / CFG.dishR, px = N * CFG.dx * mm;
+  const pic = fieldImage(s, img);
+  ctx.save();
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, 2 * Math.PI); ctx.clip();
+  ctx.imageSmoothingEnabled = true;
+  ctx.globalAlpha = 0.92;
+  ctx.drawImage(pic, cx - px / 2, cy - px / 2, px, px);
+  ctx.globalAlpha = 1;
+  ctx.restore();
+  // Glasrand
+  ctx.lineWidth = Math.max(3, R * 0.035);
+  ctx.strokeStyle = '#b9c2c6';
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, 2 * Math.PI); ctx.stroke();
+  ctx.lineWidth = 1.5; ctx.strokeStyle = '#e8eef0';
+  ctx.beginPath(); ctx.arc(cx, cy, R - ctx.lineWidth * 2, 0, 2 * Math.PI); ctx.stroke();
+  // Alginatkugel (gelartig, durchscheinend)
+  const br = CFG.beadR * mm;
+  const g = ctx.createRadialGradient(cx - br * 0.35, cy - br * 0.4, br * 0.1, cx, cy, br);
+  g.addColorStop(0, 'rgba(255,255,255,.75)');
+  g.addColorStop(0.45, 'rgba(255,255,255,.18)');
+  g.addColorStop(1, 'rgba(255,255,255,.05)');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(cx, cy, br, 0, 2 * Math.PI); ctx.fill();
+  ctx.lineWidth = Math.max(1, br * 0.08); ctx.strokeStyle = 'rgba(60,60,60,.45)'; ctx.stroke();
+}
+
+/* Farbskala des Universalindikators */
+function drawScale(x, y, w, h, vertical) {
+  const n = 11;
+  ctx.font = '600 14px system-ui, sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (let i = 0; i < n; i++) {
+    const col = UI_COL[i];
+    ctx.fillStyle = `rgb(${col[0]},${col[1]},${col[2]})`;
+    if (vertical) {
+      const hh = h / n, yy = y + (n - 1 - i) * hh;
+      ctx.fillRect(x, yy, w, hh - 2);
+      ctx.fillStyle = '#1a1a18'; ctx.fillText(i + 1, x + w + 16, yy + hh / 2);
+    } else {
+      const ww = w / n, xx = x + i * ww;
+      ctx.fillRect(xx, y, ww - 2, h);
+      ctx.fillStyle = '#1a1a18'; ctx.fillText(i + 1, xx + ww / 2, y + h + 13);
+    }
+  }
+  ctx.fillStyle = '#6b6960'; ctx.font = '14px system-ui, sans-serif';
+  if (vertical) { ctx.textAlign = 'left'; ctx.fillText('pH', x, y - 14); }
+  else { ctx.textAlign = 'right'; ctx.fillText('pH', x - 8, y + h / 2); }
+}
+
+const P1 = { sim: makeSim(), img: {}, playing: false, urea: true, urease: true };
+
+function resetP1() {
+  P1.sim = makeSim(); P1.playing = false; updP1();
+}
+function updP1() {
+  $('play1').textContent = P1.playing ? '⏸ Pause' : (P1.sim.t > 0 && P1.sim.t < CFG.tEnd ? '▶ Weiter' : '▶ Start');
+  $('time1').textContent = `${Math.floor(P1.sim.t / 60 + 1e-6)} min`;
+  $('tUrea').setAttribute('aria-pressed', P1.urea);
+  $('tUrease').setAttribute('aria-pressed', P1.urease);
+}
+
+function frameP1(dt) {
+  if (P1.playing) {
+    const left = CFG.tEnd - P1.sim.t;
+    runSim(P1.sim, Math.min(left, dt * CFG.speed), P1.urea && P1.urease);
+    if (P1.sim.t >= CFG.tEnd - 1e-6) P1.playing = false;
+    updP1();
+  }
+  ctx.clearRect(0, 0, W, H);
+  const landscape = W > H * 1.2;
+  let R, cx, cy;
+  if (landscape) {
+    R = Math.min(H * 0.44, (W - 120) * 0.44);
+    cx = (W - 90) / 2; cy = H / 2;
+    drawScale(W - 90, H * 0.2, 28, H * 0.6, true);
+  } else {
+    R = Math.min(W * 0.44, (H - 90) * 0.44);
+    cx = W / 2; cy = (H - 70) / 2;
+    const sw = Math.min(W - 80, 440);
+    drawScale((W - sw) / 2 + 14, H - 58, sw, 22, false);
+  }
+  drawDish(P1.sim, P1.img, cx, cy, R);
+}
+
+/* ─────────────────────────────────────────────
+   Teil 2: Teilchenebene an der Kugeloberfläche
+   Koordinaten in „Lupen-Pixeln“: Lupe hat den Radius 230, Mittelpunkt (0|0)
+   ───────────────────────────────────────────── */
+const LR = 230;
+const BEAD = { x: 0, y: 380, r: 262 };            // Kugeloberfläche als großer Kreis unten in der Lupe
+const ENZ_ANG = [-112, -90, -68].map(a => a * Math.PI / 180);
+
+const COL = {
+  nh3: '#0e7c7b', nh4: '#0e7c7b', nh4Bg: '#d3efee',
+  h3o: '#c62828', h3oBg: '#fbdede',
+  h2o: '#5b5ef4',
+  cl: '#7aa83c', urea: '#9a6b2f', co2: '#8a8f94',
+  enz: '#3d6b35', hot: '#e07b1a'
+};
+
+/* Lewis-Formeln: Zentralatom, H-Atome und freie Elektronenpaare unter Winkeln (Grad, y nach unten) */
+const MOL = {
+  nh3: { c: 'N', h: [180, 0, 90], lp: [-90] },
+  nh4: { c: 'N', h: [180, 0, 90, -90], ion: true },
+  h2o: { c: 'O', h: [180, 90], lp: [-90, 0] },
+  h3o: { c: 'O', h: [180, 90, 0], lp: [-90], ion: true },
+};
+const RADIUS = { nh3: 40, nh4: 44, h2o: 40, h3o: 44, cl: 24, urea: 46, co2: 30 };
+
+let P2 = null;
+
+function rnd(a, b) { return a + Math.random() * (b - a); }
+
+function freeSpot(r) {
+  for (let k = 0; k < 200; k++) {
+    const a = rnd(0, 2 * Math.PI), d = rnd(0, LR - r - 10);
+    const x = Math.cos(a) * d, y = Math.sin(a) * d;
+    if (Math.hypot(x - BEAD.x, y - BEAD.y) < BEAD.r + r + 8) continue;
+    if (P2.parts.some(p => Math.hypot(p.x - x, p.y - y) < p.r + r + 6)) continue;
+    return { x, y };
+  }
+  return { x: 0, y: -LR * 0.6 };
+}
+function edgeSpot(r) {
+  for (let k = 0; k < 100; k++) {
+    const a = rnd(-Math.PI * 0.95, -Math.PI * 0.05);
+    const x = Math.cos(a) * (LR - r - 4), y = Math.sin(a) * (LR - r - 4);
+    if (P2.parts.some(p => Math.hypot(p.x - x, p.y - y) < p.r + r + 4)) continue;
+    return { x, y };
+  }
+  return null;
+}
+
+let ID = 1;
+function addPart(type, pos, extra = {}) {
+  const r = RADIUS[type];
+  const p = { id: ID++, type, r, x: pos.x, y: pos.y, vx: rnd(-15, 15), vy: rnd(-15, 15),
+              rot: (type === 'urea' || type === 'co2' || type === 'cl') ? 0 : rnd(-Math.PI, Math.PI),
+              alpha: extra.fadeIn ? 0 : 1, leaving: false, busy: false, born: P2.t };
+  Object.assign(p, extra);
+  P2.parts.push(p);
+  return p;
+}
+
+function resetP2() {
+  P2 = { t: 0, parts: [], events: [], enz: ENZ_ANG.map(a => ({ a, cool: rnd(0, 1.5), busy: false })),
+         playing: true, slow: false, lastH3O: 0, nudge: 1.2, pnudge: 0, dish: null, dishImg: {} };
+  for (let i = 0; i < 4; i++) addPart('h3o', freeSpot(RADIUS.h3o));
+  for (let i = 0; i < 3; i++) addPart('cl', freeSpot(RADIUS.cl));
+  for (let i = 0; i < 3; i++) addPart('urea', freeSpot(RADIUS.urea));
+  // kleine Petrischale: Zustand nach etwa 8 min mit Harnstoff und Urease
+  P2.dish = makeSim(); runSim(P2.dish, 8 * 60, true);
+  updP2();
+}
+function updP2() {
+  $('play2').textContent = P2.playing ? '⏸ Pause' : '▶ Weiter';
+  $('slow2').setAttribute('aria-pressed', P2.slow);
+}
+
+function enzPos(e) { return { x: BEAD.x + Math.cos(e.a) * BEAD.r, y: BEAD.y + Math.sin(e.a) * BEAD.r }; }
+function enzNormal(e) { return { x: Math.cos(e.a), y: Math.sin(e.a) }; }
+
+function count(type) { return P2.parts.filter(p => p.type === type && !p.leaving).length; }
+
+function shortestAngle(a, b) { let d = (b - a) % (2 * Math.PI); if (d > Math.PI) d -= 2 * Math.PI; if (d < -Math.PI) d += 2 * Math.PI; return d; }
+const ease = t => t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+const deg = a => a * Math.PI / 180;
+
+function stepP2(dt) {
+  P2.t += dt;
+  const parts = P2.parts;
+
+  // Bewegung (zufällige Wärmebewegung, sanft gedämpft)
+  for (const p of parts) {
+    if (p.busy) continue;
+    p.vx += (-p.vx * 0.6 + rnd(-1, 1) * 70) * dt;
+    p.vy += (-p.vy * 0.6 + rnd(-1, 1) * 70) * dt;
+    if (p.leaving) { const d = Math.hypot(p.x, p.y) || 1; p.vx += p.x / d * 60 * dt; p.vy += p.y / d * 60 * dt; }
+    if (p.target) { // gezielter Weg (Harnstoff zur Urease, Ammoniak und Oxonium-Ion zueinander)
+      const dx = p.target.x - p.x, dy = p.target.y - p.y, d = Math.hypot(dx, dy) || 1;
+      p.vx += dx / d * 50 * dt; p.vy += dy / d * 50 * dt;
+    }
+    const sp = Math.hypot(p.vx, p.vy), max = p.target ? 55 : 32;
+    if (sp > max) { p.vx *= max / sp; p.vy *= max / sp; }
+    p.x += p.vx * dt; p.y += p.vy * dt;
+    if (!p.type.match(/urea|co2|cl/)) p.rot += rnd(-1, 1) * 0.8 * dt;
+  }
+
+  // Abstoßung zwischen Teilchen (reagierende Teilchen bleiben stehen, die anderen weichen ganz aus)
+  for (let pass = 0; pass < 2; pass++)
+  for (let i = 0; i < parts.length; i++) for (let j = i + 1; j < parts.length; j++) {
+    const a = parts[i], b = parts[j];
+    if (a.busy && b.busy) continue;
+    const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 0.01, m = a.r + b.r - 6;
+    if (d < m) {
+      const ux = dx / d, uy = dy / d, both = !a.busy && !b.busy, push = both ? (m - d) / 2 : (m - d);
+      if (!a.busy) { a.x -= ux * push; a.y -= uy * push; }
+      if (!b.busy) { b.x += ux * push; b.y += uy * push; }
+    }
+  }
+
+  // Ränder: Lupenkreis und Kugeloberfläche
+  for (const p of parts) {
+    if (p.busy) continue;
+    const d = Math.hypot(p.x, p.y), lim = LR - p.r - 2;
+    if (d > lim && !p.leaving) { p.x *= lim / d; p.y *= lim / d; const n = { x: p.x / d, y: p.y / d }, vn = p.vx * n.x + p.vy * n.y; if (vn > 0) { p.vx -= 2 * vn * n.x; p.vy -= 2 * vn * n.y; } }
+    const db = Math.hypot(p.x - BEAD.x, p.y - BEAD.y), lb = BEAD.r + p.r + 2;
+    if (db < lb) { const n = { x: (p.x - BEAD.x) / db, y: (p.y - BEAD.y) / db }; p.x = BEAD.x + n.x * lb; p.y = BEAD.y + n.y * lb; const vn = p.vx * n.x + p.vy * n.y; if (vn < 0) { p.vx -= 2 * vn * n.x; p.vy -= 2 * vn * n.y; } }
+    if (p.alpha < 1 && !p.leaving) p.alpha = Math.min(1, p.alpha + dt * 1.5);
+    if (p.leaving) p.alpha -= dt * 0.7;
+  }
+  P2.parts = parts.filter(p => p.alpha > 0);
+
+  // Urease: Harnstoff wird gespalten
+  for (const e of P2.enz) {
+    e.cool -= dt;
+    if (e.busy || e.cool > 0) continue;
+    const ep = enzPos(e), n = enzNormal(e), site = { x: ep.x + n.x * 50, y: ep.y + n.y * 50 };
+    const u = P2.parts.find(p => p.type === 'urea' && !p.busy && !p.leaving && Math.hypot(p.x - site.x, p.y - site.y) < 70);
+    if (u) {
+      e.busy = true; u.busy = true; u.target = null;
+      P2.events.push({ kind: 'urease', e, u, t: 0, from: { x: u.x, y: u.y }, site });
+    }
+  }
+  // Wenn länger nichts passiert: ein Harnstoff-Teilchen bewegt sich zur nächsten freien Urease
+  P2.nudge += dt;
+  if (P2.nudge > 1.5) {
+    P2.nudge = 0;
+    const free = P2.enz.filter(e => !e.busy && e.cool <= 0);
+    const us = P2.parts.filter(p => p.type === 'urea' && !p.busy && !p.leaving && !p.target);
+    if (free.length && us.length) {
+      const e = free[Math.floor(Math.random() * free.length)], ep = enzPos(e), n = enzNormal(e);
+      const site = { x: ep.x + n.x * 50, y: ep.y + n.y * 50 };
+      us.sort((a, b) => Math.hypot(a.x - site.x, a.y - site.y) - Math.hypot(b.x - site.x, b.y - site.y));
+      us[0].target = site;
+    }
+  }
+
+  // Ammoniak + Oxonium-Ion: Protonenübergang
+  const nh3s = P2.parts.filter(p => p.type === 'nh3' && !p.busy && !p.leaving && p.alpha > 0.9);
+  const h3os = P2.parts.filter(p => p.type === 'h3o' && !p.busy && !p.leaving && p.alpha > 0.9);
+  for (const a of nh3s) {
+    if (a.busy) continue;
+    let best = null, bd = 110;
+    for (const b of h3os) { if (b.busy) continue; const d = Math.hypot(a.x - b.x, a.y - b.y); if (d < bd) { bd = d; best = b; } }
+    if (best) {
+      a.busy = best.busy = true; a.target = best.target = null; P2.pnudge = 0;
+      const ux = (best.x - a.x) / bd, uy = (best.y - a.y) / bd;
+      const mx = (a.x + best.x) / 2, my = (a.y + best.y) / 2;
+      const dirU = Math.atan2(uy, ux);
+      P2.events.push({ kind: 'proton', a, b: best, t: 0,
+        a0: { x: a.x, y: a.y, rot: a.rot }, b0: { x: best.x, y: best.y, rot: best.rot },
+        a1: { x: mx - ux * 44, y: my - uy * 44, rot: a.rot + shortestAngle(a.rot, dirU - deg(-90)) },
+        b1: { x: mx + ux * 44, y: my + uy * 44, rot: best.rot + shortestAngle(best.rot, dirU + Math.PI - deg(0)) } });
+    }
+  }
+
+  // Wenn länger kein Protonenübergang: nächstes Paar Ammoniak/Oxonium-Ion bewegt sich aufeinander zu
+  P2.pnudge += dt;
+  if (P2.pnudge > 2.5) {
+    P2.pnudge = 0;
+    const ns = P2.parts.filter(p => p.type === 'nh3' && !p.busy && !p.leaving && !p.target);
+    const hs = P2.parts.filter(p => p.type === 'h3o' && !p.busy && !p.leaving && !p.target);
+    let pair = null, bd = Infinity;
+    for (const a of ns) for (const b of hs) { const d = Math.hypot(a.x - b.x, a.y - b.y); if (d < bd) { bd = d; pair = [a, b]; } }
+    if (pair) { const [a, b] = pair; a.target = { x: b.x, y: b.y }; b.target = { x: a.x, y: a.y }; }
+  }
+  for (const p of P2.parts) if (p.target && (p.type === 'nh3' || p.type === 'h3o')) {
+    const partner = P2.parts.find(q => q !== p && !q.busy && !q.leaving && q.target && Math.hypot(q.x - p.target.x, q.y - p.target.y) < 200 && q.type !== p.type);
+    if (partner) p.target = { x: partner.x, y: partner.y }; else p.target = null;
+  }
+
+  // Ereignisse fortschreiben
+  for (const ev of P2.events) {
+    ev.t += dt;
+    if (ev.kind === 'urease') {
+      const T1 = 0.7, T2 = 1.6;
+      const f = ease(Math.min(1, ev.t / T1));
+      ev.u.x = ev.from.x + (ev.site.x - ev.from.x) * f; ev.u.y = ev.from.y + (ev.site.y - ev.from.y) * f;
+      if (ev.t >= T2) {
+        ev.done = true;
+        ev.u.alpha = 0; ev.u.leaving = true;
+        const n = enzNormal(ev.e), tx = -n.y, ty = n.x;
+        const s = ev.site;
+        addPart('nh3', { x: s.x + tx * 46 + n.x * 10, y: s.y + ty * 46 + n.y * 10 }, { vx: tx * 40 + n.x * 30, vy: ty * 40 + n.y * 30 });
+        addPart('nh3', { x: s.x - tx * 46 + n.x * 10, y: s.y - ty * 46 + n.y * 10 }, { vx: -tx * 40 + n.x * 30, vy: -ty * 40 + n.y * 30 });
+        addPart('co2', { x: s.x + n.x * 40, y: s.y + n.y * 40 }, { vx: n.x * 40, vy: n.y * 40 });
+        ev.e.busy = false; ev.e.cool = rnd(2.5, 4.5);
+      }
+    } else if (ev.kind === 'proton') {
+      const TA = 0.8, TB = 1.0, TC = 0.5;
+      const fa = ease(Math.min(1, ev.t / TA));
+      for (const [p, s0, s1] of [[ev.a, ev.a0, ev.a1], [ev.b, ev.b0, ev.b1]]) {
+        p.x = s0.x + (s1.x - s0.x) * fa; p.y = s0.y + (s1.y - s0.y) * fa; p.rot = s0.rot + (s1.rot - s0.rot) * fa;
+      }
+      ev.q = Math.max(0, Math.min(1, (ev.t - TA) / TB));
+      if (ev.t >= TA + TB + TC) {
+        ev.done = true;
+        ev.a.type = 'nh4'; ev.a.r = RADIUS.nh4; ev.a.busy = false; ev.a.born = P2.t;
+        ev.b.type = 'h2o'; ev.b.r = RADIUS.h2o; ev.b.busy = false; ev.b.born = P2.t;
+        // H2O hat jetzt die H-Atome bei 180° und 90°, freie Elektronenpaare bei −90° und 0°: Drehung bleibt
+        const ux = ev.b.x - ev.a.x, uy = ev.b.y - ev.a.y, d = Math.hypot(ux, uy) || 1;
+        ev.a.vx = -ux / d * 25; ev.a.vy = -uy / d * 25; ev.b.vx = ux / d * 25; ev.b.vy = uy / d * 25;
+      }
+    }
+  }
+  P2.events = P2.events.filter(e => !e.done);
+
+  // Nachschub und Abwandern (die Lupe zeigt nur einen Ausschnitt)
+  if (count('urea') < 2 && Math.random() < dt * 0.8) { const s = edgeSpot(RADIUS.urea); if (s) addPart('urea', s, { fadeIn: true }); }
+  P2.lastH3O += dt;
+  if (count('h3o') < 3 && count('nh3') === 0 && P2.t < 25 && P2.lastH3O > 3) {
+    const s = edgeSpot(RADIUS.h3o); if (s) { addPart('h3o', s, { fadeIn: true }); P2.lastH3O = 0; }
+  }
+  for (const [type, max] of [['nh4', 2], ['h2o', 2], ['co2', 2], ['nh3', 3]]) {
+    const list = P2.parts.filter(p => p.type === type && !p.leaving && !p.busy).sort((a, b) => a.born - b.born);
+    while (list.length > max) list.shift().leaving = true;
+  }
+}
+
+/* ── Zeichnen der Teilchen ── */
+function drawLewis(m, x, y, rot, col, s, opt = {}) {
+  const hAlpha = opt.hAlpha || {}, lpAlpha = opt.lpAlpha || {}, extraLp = opt.extraLp;
+  ctx.save();
+  ctx.font = `700 ${Math.round(21 * s)}px system-ui, sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineCap = 'round';
+  ctx.lineWidth = 2.6 * s;
+  ctx.fillText(m.c, x, y + 1 * s);
+  m.h.forEach((a, i) => {
+    const al = hAlpha[i] ?? 1; if (al <= 0) return;
+    const t = deg(a) + rot, cx = Math.cos(t), cy = Math.sin(t);
+    ctx.globalAlpha = al;
+    ctx.beginPath(); ctx.moveTo(x + cx * 11 * s, y + cy * 11 * s); ctx.lineTo(x + cx * 21 * s, y + cy * 21 * s); ctx.stroke();
+    if (!opt.skipH || !opt.skipH.includes(i)) ctx.fillText('H', x + cx * 30 * s, y + cy * 30 * s + 1 * s);
+    ctx.globalAlpha = 1;
+  });
+  const lps = (m.lp || []).map((a, i) => [a, lpAlpha[i] ?? 1]);
+  if (extraLp) lps.push(extraLp);
+  for (const [a, al] of lps) {
+    if (al <= 0) continue;
+    const t = deg(a) + rot, cx = Math.cos(t), cy = Math.sin(t), px = -cy, py = cx;
+    const mx = x + cx * 14 * s, my = y + cy * 14 * s;
+    ctx.globalAlpha = al;
+    ctx.beginPath(); ctx.moveTo(mx - px * 7 * s, my - py * 7 * s); ctx.lineTo(mx + px * 7 * s, my + py * 7 * s); ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+}
+
+function ionHalo(x, y, r, bg, col, s, alpha = 1) {
+  if (alpha <= 0) return;
+  ctx.save(); ctx.globalAlpha *= alpha;
+  ctx.fillStyle = bg; ctx.strokeStyle = col; ctx.lineWidth = 1.5 * s;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = col; ctx.font = `700 ${Math.round(18 * s)}px system-ui, sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('+', x + r * 0.72, y - r * 0.72);
+  ctx.restore();
+}
+
+function drawPart(p, L, ev) {
+  const x = L.cx + p.x * L.s, y = L.cy + p.y * L.s, s = L.s;
+  ctx.save(); ctx.globalAlpha = Math.max(0, Math.min(1, p.alpha));
+  switch (p.type) {
+    case 'nh3':
+      if (ev && ev.a === p) {
+        const q = ev.q || 0;
+        ionHalo(x, y, 44 * s, COL.nh4Bg, COL.nh4, s, q);
+        drawLewis(MOL.nh3, x, y, p.rot, COL.nh3, s, { lpAlpha: { 0: 1 - Math.min(1, 2 * q) } });
+        // neue N–H-Bindung
+        const t = deg(-90) + p.rot;
+        ctx.save(); ctx.globalAlpha = Math.max(0, 2 * q - 1); ctx.strokeStyle = COL.nh3; ctx.lineWidth = 2.6 * s; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(x + Math.cos(t) * 11 * s, y + Math.sin(t) * 11 * s); ctx.lineTo(x + Math.cos(t) * 21 * s, y + Math.sin(t) * 21 * s); ctx.stroke(); ctx.restore();
+      } else drawLewis(MOL.nh3, x, y, p.rot, COL.nh3, s);
+      break;
+    case 'nh4':
+      ionHalo(x, y, 44 * s, COL.nh4Bg, COL.nh4, s);
+      drawLewis(MOL.nh4, x, y, p.rot, COL.nh4, s);
+      break;
+    case 'h2o':
+      drawLewis(MOL.h2o, x, y, p.rot, COL.h2o, s);
+      break;
+    case 'h3o':
+      if (ev && ev.b === p) {
+        const q = ev.q || 0;
+        ionHalo(x, y, 44 * s, COL.h3oBg, COL.h3o, s, 1 - q);
+        drawLewis(MOL.h3o, x, y, p.rot, q > 0.5 ? COL.h2o : COL.h3o, s,
+          { hAlpha: { 2: 1 - Math.min(1, 2 * q) }, skipH: [2], extraLp: [0, Math.max(0, 2 * q - 1)] });
+      } else {
+        ionHalo(x, y, 44 * s, COL.h3oBg, COL.h3o, s);
+        drawLewis(MOL.h3o, x, y, p.rot, COL.h3o, s);
+      }
+      break;
+    case 'cl': {
+      const r = 24 * s;
+      ctx.fillStyle = COL.cl; ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = `700 ${Math.round(16 * s)}px system-ui, sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Cl⁻', x, y + 1 * s);
+      break;
+    }
+    case 'urea': {
+      const w = 92 * s, h = 34 * s;
+      ctx.fillStyle = COL.urea; roundRect(x - w / 2, y - h / 2, w, h, 9 * s); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = `700 ${Math.round(16 * s)}px system-ui, sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('CO(NH₂)₂', x, y + 1 * s);
+      break;
+    }
+    case 'co2': {
+      const r = 30 * s;
+      ctx.fillStyle = COL.co2; ctx.beginPath();
+      for (let k = 0; k < 6; k++) { const a = Math.PI / 6 + k * Math.PI / 3; ctx.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r); }
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = `700 ${Math.round(16 * s)}px system-ui, sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('CO₂', x, y + 1 * s);
+      break;
+    }
+  }
+  ctx.restore();
+}
+
+function drawMovingH(ev, L) {
+  const s = L.s, a = ev.a, b = ev.b, q = ev.q || 0;
+  const ta = deg(-90) + a.rot, tb = deg(0) + b.rot;
+  const fx = L.cx + b.x * s + Math.cos(tb) * 30 * s, fy = L.cy + b.y * s + Math.sin(tb) * 30 * s;
+  const ax = L.cx + a.x * s + Math.cos(ta) * 30 * s, ay = L.cy + a.y * s + Math.sin(ta) * 30 * s;
+  const e = ease(q);
+  ctx.save();
+  ctx.fillStyle = ev.t > 0.3 ? COL.hot : COL.h3o;
+  ctx.font = `700 ${Math.round(21 * s)}px system-ui, sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('H', fx + (ax - fx) * e, fy + (ay - fy) * e + 1 * s);
+  ctx.restore();
+}
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
+}
+
+function drawEnzyme(e, L, active) {
+  const p = enzPos(e), n = enzNormal(e), s = L.s;
+  const x = L.cx + p.x * s, y = L.cy + p.y * s, a = Math.atan2(n.y, n.x);
+  ctx.save(); ctx.translate(x, y); ctx.rotate(a + Math.PI / 2);
+  // Enzym: rundliche Form mit Einbuchtung (aktives Zentrum) zur Lösung hin
+  const r = 30 * s;
+  ctx.fillStyle = active ? '#5a9150' : COL.enz;
+  ctx.beginPath();
+  ctx.arc(0, 8 * s, r, deg(-62), deg(242), false);
+  ctx.lineTo(-10 * s, -r * 0.62);
+  ctx.quadraticCurveTo(0, -6 * s, 10 * s, -r * 0.62);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+
+function lupeLayout() {
+  const landscape = W > H * 1.15;
+  let d, L;
+  if (landscape) {
+    const dr = Math.min(W * 0.13, H * 0.3);
+    d = { cx: dr + 24, cy: H * 0.5, r: dr };
+    const lr = Math.min(H * 0.46, (W - d.cx - dr - 60) * 0.5);
+    L = { cx: W - lr - 24, cy: H / 2, r: lr };
+  } else {
+    const dr = Math.min(W * 0.2, H * 0.12);
+    d = { cx: W * 0.5, cy: dr + 18, r: dr };
+    const lr = Math.min(W * 0.46, (H - d.cy - dr - 40) * 0.5);
+    L = { cx: W / 2, cy: H - lr - 16, r: lr };
+  }
+  L.s = L.r / LR;
+  return { d, L };
+}
+
+function tangents(px, py, cx, cy, r) {
+  const dx = cx - px, dy = cy - py, d = Math.hypot(dx, dy);
+  if (d <= r) return null;
+  const a = Math.atan2(dy, dx), b = Math.asin(r / d), t = Math.sqrt(d * d - r * r);
+  return [a - b, a + b].map(ang => ({ x: px + Math.cos(ang) * t, y: py + Math.sin(ang) * t }));
+}
+
+function frameP2(dt) {
+  if (P2.playing) {
+    let rest = dt * CFG.pSpeed * (P2.slow ? 0.35 : 1);
+    while (rest > 0) { const h = Math.min(rest, 1 / 60); stepP2(h); rest -= h; }
+  }
+  ctx.clearRect(0, 0, W, H);
+  const { d, L } = lupeLayout();
+
+  // Stoffebene: kleine Petrischale, Punkt am Kugelrand
+  drawDish(P2.dish, P2.dishImg, d.cx, d.cy, d.r);
+  const mm = d.r / CFG.dishR;
+  const pt = { x: d.cx, y: d.cy - CFG.beadR * mm };
+  const tg = tangents(pt.x, pt.y, L.cx, L.cy, L.r);
+  ctx.strokeStyle = '#1a1a18'; ctx.lineWidth = 1.5;
+  if (tg) for (const q of tg) { ctx.beginPath(); ctx.moveTo(pt.x, pt.y); ctx.lineTo(q.x, q.y); ctx.stroke(); }
+  ctx.fillStyle = '#1a1a18'; ctx.beginPath(); ctx.arc(pt.x, pt.y, 3.5, 0, 2 * Math.PI); ctx.fill();
+
+  // Teilchenebene: Lupe
+  ctx.save();
+  ctx.beginPath(); ctx.arc(L.cx, L.cy, L.r, 0, 2 * Math.PI);
+  ctx.fillStyle = '#fff'; ctx.fill(); ctx.clip();
+  // Kugel (Alginat-Gel) unten
+  ctx.fillStyle = '#efe9d8';
+  ctx.beginPath(); ctx.arc(L.cx + BEAD.x * L.s, L.cy + BEAD.y * L.s, BEAD.r * L.s, 0, 2 * Math.PI); ctx.fill();
+  ctx.strokeStyle = '#b8ad8c'; ctx.lineWidth = 2; ctx.stroke();
+  const active = new Set(P2.events.filter(e => e.kind === 'urease').map(e => e.e));
+  for (const e of P2.enz) drawEnzyme(e, L, active.has(e));
+  // Beschriftungen (neutral)
+  ctx.fillStyle = '#8a7f5f'; ctx.font = `600 ${Math.round(15 * L.s)}px system-ui, sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('Kugel', L.cx, L.cy + (LR - 24) * L.s);
+  const e1 = enzPos(P2.enz[1]);
+  ctx.fillStyle = COL.enz;
+  ctx.fillText('Urease', L.cx + e1.x * L.s, L.cy + (e1.y + 48) * L.s);
+  ctx.fillStyle = '#9a978d'; ctx.textAlign = 'center';
+  ctx.fillText('Lösung', L.cx, L.cy - (LR - 18) * L.s);
+
+  const evOf = new Map();
+  for (const ev of P2.events) if (ev.kind === 'proton') { evOf.set(ev.a, ev); evOf.set(ev.b, ev); }
+  // gelöste Teilchen hinten, reagierende vorn
+  const sorted = [...P2.parts].sort((a, b) => (evOf.has(a) ? 1 : 0) - (evOf.has(b) ? 1 : 0));
+  for (const p of sorted) drawPart(p, L, evOf.get(p));
+  // wanderndes Proton zuletzt, damit es nicht verdeckt wird
+  for (const ev of P2.events) if (ev.kind === 'proton') drawMovingH(ev, L);
+  ctx.restore();
+  ctx.strokeStyle = '#1a1a18'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(L.cx, L.cy, L.r, 0, 2 * Math.PI); ctx.stroke();
+}
+
+/* ─────────────────────────────────────────────
+   Rahmen: Reiter, Größe, Schleife
+   ───────────────────────────────────────────── */
+const HASHES = { 1: '#modell', 2: '#teilchen' };
+const tabs = [...document.querySelectorAll('[role=tab]')];
+let part = 1;
+
+function partFromHash() { return Number(Object.keys(HASHES).find(k => HASHES[k] === location.hash)) || 1; }
+function showPart(k) {
+  part = k;
+  tabs.forEach(t => t.setAttribute('aria-selected', Number(t.dataset.part) === k));
+  $('ctrl1').hidden = k !== 1; $('ctrl2').hidden = k !== 2;
+  if (location.hash !== HASHES[k]) history.replaceState(null, '', HASHES[k]);
+  resize();
+}
+tabs.forEach(t => t.addEventListener('click', () => showPart(Number(t.dataset.part))));
+window.addEventListener('hashchange', () => showPart(partFromHash()));
+
+function resize() {
+  const r = $('stage').getBoundingClientRect();
+  DPR = window.devicePixelRatio || 1;
+  W = r.width; H = r.height;
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+new ResizeObserver(resize).observe($('stage'));
+
+$('play1').addEventListener('click', () => {
+  if (!P1.playing && P1.sim.t >= CFG.tEnd - 1e-6) P1.sim = makeSim();
+  P1.playing = !P1.playing; updP1();
+});
+$('reset1').addEventListener('click', resetP1);
+$('tUrea').addEventListener('click', () => { P1.urea = !P1.urea; resetP1(); });
+$('tUrease').addEventListener('click', () => { P1.urease = !P1.urease; resetP1(); });
+$('play2').addEventListener('click', () => { P2.playing = !P2.playing; updP2(); });
+$('slow2').addEventListener('click', () => { P2.slow = !P2.slow; updP2(); });
+$('reset2').addEventListener('click', resetP2);
+
+let last = null;
+function loop(ts) {
+  // erster Zeitstempel kann vor performance.now() liegen: Zeitschritt nie negativ
+  const dt = last === null ? 0 : Math.max(0, Math.min(0.1, (ts - last) / 1000));
+  last = ts;
+  if (W > 0 && H > 0) { if (part === 1) frameP1(dt); else frameP2(dt); }
+  requestAnimationFrame(loop);
+}
+
+/* ── Lehrermodus ── */
+function setupTeacher() {
+  const box = document.createElement('details');
+  box.id = 'teacher';
+  box.innerHTML = `
+    <summary>Lehrermodus</summary>
+    <h3>Teil 1 (Modellversuch)</h3>
+    <label>c(HCl) in mol/L <input type="number" id="tAcid" min="0.0001" max="0.1" step="0.0001"></label>
+    <label>NH₃-Bildung in mol/(L·s) <input type="number" id="tRate" min="0.00001" max="0.01" step="0.00001"></label>
+    <label>Diffusion in mm²/s <input type="number" id="tDiff" min="0.005" max="0.2" step="0.005"></label>
+    <label>Zeitraffer (s pro s) <input type="number" id="tSpeed" min="1" max="300" step="1"></label>
+    <label>Dauer in min <input type="number" id="tEnd" min="1" max="60" step="1"></label>
+    <h3>Teil 2 (Teilchenebene)</h3>
+    <label>Tempo <input type="number" id="tPSpeed" min="0.2" max="3" step="0.1"></label>
+    <button class="btn" id="tCopy">Werte kopieren</button>
+    <div class="note" id="tNote">Kopiert den pH-Wert in Teil 1 in Abhängigkeit vom Abstand zur Kugelmitte (in mm). Änderungen in Teil 1 starten den Versuch neu.</div>`;
+  document.body.appendChild(box);
+  const f = id => box.querySelector('#' + id);
+  const bind = (id, key, conv = x => x, back = x => x) => {
+    f(id).value = back(CFG[key]);
+    f(id).addEventListener('change', e => { const v = +e.target.value; if (v > 0) { CFG[key] = conv(v); resetP1(); } e.target.value = back(CFG[key]); });
+  };
+  bind('tAcid', 'acid'); bind('tRate', 'rate'); bind('tDiff', 'diff'); bind('tSpeed', 'speed');
+  bind('tEnd', 'tEnd', v => v * 60, v => v / 60);
+  f('tPSpeed').value = CFG.pSpeed;
+  f('tPSpeed').addEventListener('change', e => { CFG.pSpeed = Math.max(0.2, Math.min(3, +e.target.value || 1)); e.target.value = CFG.pSpeed; });
+  f('tCopy').addEventListener('click', async () => {
+    const s = P1.sim, c = Math.round(s.c);
+    let text = `t = ${Math.round(s.t)} s\nAbstand in mm\tpH\n`;
+    for (let x = c; x < s.N - 1; x++) { const i = c * s.N + x; if (!s.inDish[i]) break; text += `${((x - c) * CFG.dx).toString().replace('.', ',')}\t${phOf(s.T[i]).toFixed(2).replace('.', ',')}\n`; }
+    try { await navigator.clipboard.writeText(text); f('tNote').textContent = 'Kopiert.'; }
+    catch (err) { f('tNote').textContent = 'Kopieren nicht möglich.'; }
+  });
+}
+
+const params = new URLSearchParams(location.search);
+if (params.has('lehrer')) setupTeacher();
+if (params.has('eingebettet')) document.body.classList.add('embedded');
+
+buildTab();
+resetP2();
+updP1();
+showPart(partFromHash());
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

@@ -102,4 +102,5 @@ Aufbau des Repos: siehe `README.md`.
 ## Unterrichtsreihen
 
 - Chemie 7, Aggregatzustände: `chemie/7/aggregatzustaende-reihe.md`
+- Chemie 10, Säuren und Basen (Plan 2, Helicobacter): `chemie/10/saeuren-basen-reihe.md`
 - Mathe GK Q2, Binomialverteilung: `mathe/q2/binomialverteilung-reihe.md`
