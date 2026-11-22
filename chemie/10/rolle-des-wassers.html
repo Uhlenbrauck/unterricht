@@ -103,6 +103,7 @@
   .eq { display: block; margin: 8px 0; padding: 8px 12px; background: var(--accent-lt); border-radius: 8px; font-size: 18px; }
   .def { margin-top: 10px; padding: 10px 12px; border-left: 4px solid var(--accent); background: var(--bg); border-radius: 6px; }
 </style>
+<link rel="stylesheet" href="../../assets/versuch.css">
 </head>
 <body>
 
@@ -126,30 +127,57 @@
 
   <!-- ───────────────────────── Versuch ───────────────────────── -->
   <section id="versuch">
-    <div class="card">
-      <h2>Versuch: Trocken oder feucht?</h2>
-      <p class="warn"><strong>Schutzbrille tragen!</strong></p>
+    <div class="versuch">
+      <div class="v-kasten v-titel">
+        <h3>Trocken oder feucht?</h3>
+        <div class="v-gebote"><img src="../../assets/schutzbrille.svg" alt="Schutzbrille tragen"></div>
+      </div>
 
-      <h3>Chemikalien und Gefahren</h3>
-      <table>
-        <tr><th>Stoff</th><th>Gefahren</th></tr>
-        <tr><td>Zitronensäure (fest)</td><td><img src="../9/bilder/ghs/ghs_07_exclam.png" alt="GHS07">Achtung: verursacht schwere Augenreizung.</td></tr>
-        <tr><td>Natron (Natriumhydrogencarbonat, fest)</td><td>kein Gefahrstoff</td></tr>
-      </table>
+      <div class="v-zwei">
+        <div class="v-kasten">
+          <h4>Chemikalien</h4>
+          <ul class="v-liste v-chemikalien">
+            <li><span>Zitronensäure (fest)</span><span class="v-ghs"><img src="../../assets/ghs/ghs_07_exclam.png" alt="GHS07 Achtung"></span></li>
+            <li><span>Natron (Natriumhydrogencarbonat, fest)</span><span></span></li>
+            <li><span>Destilliertes Wasser</span><span></span></li>
+          </ul>
+        </div>
+        <div class="v-kasten">
+          <h4>Material</h4>
+          <ul class="v-liste">
+            <li>2 Uhrgläser</li>
+            <li>1 kleines Becherglas</li>
+            <li>Spatel</li>
+            <li>Pinzette</li>
+            <li>Universalindikatorpapier</li>
+            <li>Spritzflasche</li>
+          </ul>
+        </div>
+      </div>
 
-      <h3>Material</h3>
-      <p>2 Uhrgläser, kleines Becherglas, Spatel, Pinzette, Universalindikatorpapier, Spritzflasche mit destilliertem Wasser</p>
+      <div class="v-kasten v-durchfuehrung">
+        <h4>Durchführung</h4>
+        <p><b>Teil A</b>: Indikatorpapier</p>
+        <ol>
+          <li>Gib eine Spatelspitze Zitronensäure auf ein Uhrglas. Lege ein <u>trockenes</u> Indikatorpapier mit der Pinzette auf die Kristalle und drücke es leicht an.
+            <em>Notiere die Farbe des Indikatorpapiers.</em></li>
+          <li>Wiederhole Schritt 1 auf dem zweiten Uhrglas mit einem Indikatorpapier, das du vorher mit einem Tropfen Wasser <u>angefeuchtet</u> hast.
+            <em>Notiere die Farbe.</em></li>
+        </ol>
+        <p><b>Teil B</b>: Zitronensäure und Natron</p>
+        <ol start="3">
+          <li>Mische im trockenen Becherglas je eine Spatelspitze Zitronensäure und Natron. <em>Beobachte etwa eine Minute.</em></li>
+          <li>Gib nun einige Milliliter Wasser dazu. <em>Beobachte erneut.</em></li>
+        </ol>
+      </div>
 
-      <h3>Durchführung</h3>
-      <ol class="steps">
-        <li><strong>Teil A:</strong> Gib eine Spatelspitze Zitronensäure auf ein Uhrglas. Lege ein <em>trockenes</em> Indikatorpapier mit der Pinzette auf die Kristalle und drücke es leicht an.</li>
-        <li>Wiederhole Schritt 1 mit einem Indikatorpapier, das du vorher mit einem Tropfen Wasser <em>angefeuchtet</em> hast.</li>
-        <li><strong>Teil B:</strong> Mische im trockenen Becherglas je eine Spatelspitze Zitronensäure und Natron. Beobachte etwa eine Minute.</li>
-        <li>Gib nun einige Milliliter Wasser dazu und beobachte erneut.</li>
-      </ol>
-
-      <h3>Entsorgung</h3>
-      <p>Alle Reste mit viel Wasser in den Ausguss, Indikatorpapier in den Restmüll.</p>
+      <div class="v-kasten v-entsorgung">
+        <h4>Entsorgung</h4>
+        <ul class="v-liste">
+          <li>Alle Reste können mit viel Wasser in den Ausguss gegeben werden.</li>
+          <li>Indikatorpapier in den Restmüll.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
