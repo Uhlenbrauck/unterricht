@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Wie überlebt Helicobacter pylori in der Magensäure? – Lösungen</title>
+<!--
+  Lösungen zu helicobacter-erarbeitung.html (Aufgaben 1–5).
+  Absichtlich nicht verlinkt (weder Startseite noch Erarbeitungsseite). Kai gibt Link bzw. QR-Code heraus.
+  Sprungziele #aufgabe1 … #aufgabe5. Lehrermodus (?lehrer): QR-Codes der Sprungziele (Dateien in qr/loesungen/).
+-->
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #f7f6f2;
+    --surface: #ffffff;
+    --border:  #d9d6cc;
+    --text:    #1a1a18;
+    --muted:   #6b6960;
+    --accent:  #2d5a3d;
+    --accent-lt: #e8f0eb;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  header { background: var(--accent); color: #fff; padding: 18px 20px 16px; }
+  header .eyebrow { font-size: 13px; opacity: .8; }
+  header h1 { font-size: clamp(22px, 3.2vw, 30px); font-weight: 600; line-height: 1.25; }
+
+  nav {
+    position: sticky; top: 0; z-index: 5;
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 8px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  nav a {
+    min-height: 44px; display: inline-flex; align-items: center;
+    padding: 0 18px; border-radius: 22px;
+    border: 2px solid var(--border); background: var(--surface);
+    color: var(--text); text-decoration: none; font-size: 16px;
+  }
+
+  main { max-width: 900px; margin: 0 auto; padding: 16px 20px 60px; }
+  .intro { margin-bottom: 18px; color: var(--muted); }
+
+  section {
+    margin-bottom: 28px; scroll-margin-top: 70px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 18px;
+  }
+
+  h2 { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
+  h2 .nr { color: var(--accent); }
+
+  details.loesung { border-top: 1px solid var(--border); padding: 8px 0; }
+  details.loesung summary {
+    display: flex; align-items: center; gap: 10px;
+    min-height: 44px; cursor: pointer; list-style: none; font-size: 16px;
+  }
+  details.loesung summary::-webkit-details-marker { display: none; }
+  details.loesung summary .buchstabe { font-weight: 700; color: var(--accent); min-width: 22px; }
+  details.loesung summary .knopf {
+    margin-left: auto; flex: none;
+    padding: 6px 14px; border-radius: 22px;
+    border: 2px solid var(--border); background: var(--bg);
+    color: var(--accent); font-size: 14px; font-weight: 600;
+  }
+  details.loesung summary .knopf::after { content: "Lösung zeigen ▾"; }
+  details.loesung[open] summary .knopf::after { content: "Lösung ausblenden ▴"; }
+
+  .text { margin: 4px 0 6px; padding: 12px 14px; background: var(--accent-lt); border-radius: 8px; }
+  .text p + p, .text p + ul, .text ul + p, .text p + table, .text table + p, .text p + .eq, .text .eq + p { margin-top: 8px; }
+  .text ul { padding-left: 20px; }
+  .zusatz { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 10px; background: var(--accent-lt); color: var(--accent); }
+
+  table { border-collapse: collapse; width: 100%; background: var(--surface); font-size: 15px; }
+  th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: var(--bg); }
+
+  .eq { font-size: 17px; padding: 6px 10px; background: var(--surface); border-radius: 6px; display: inline-block; }
+
+  #qr { margin-top: 30px; }
+  #qr .codes { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  #qr figure { text-align: center; font-size: 13px; }
+  #qr img { width: 140px; height: 140px; image-rendering: pixelated; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Chemie 10 · Säuren und Basen · Plan 2, Material 5</div>
+  <h1>Wie überlebt Helicobacter pylori in der Magensäure? – Lösungen</h1>
+</header>
+
+<nav aria-label="Aufgaben">
+  <a href="#aufgabe1">Aufgabe 1</a>
+  <a href="#aufgabe2">Aufgabe 2</a>
+  <a href="#aufgabe3">Aufgabe 3</a>
+  <a href="#aufgabe4">Aufgabe 4</a>
+  <a href="#aufgabe5">Aufgabe 5</a>
+</nav>
+
+<main>
+
+  <p class="intro">Vergleiche nach jeder Teilaufgabe deine eigene Lösung mit der Lösung hier. Deine Formulierung darf anders sein – wichtig ist, dass deine Erklärung dieselben Punkte enthält.</p>
+
+  <!-- ───────────────────────── Aufgabe 1 ───────────────────────── -->
+  <section id="aufgabe1">
+    <h2><span class="nr">Aufgabe 1</span> | Was passiert um die Kugel herum?</h2>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">a)</span> Beobachtungen und Skizze<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Zu Beginn ist die Lösung überall orange-rot. Nach kurzer Zeit färbt sich die Lösung direkt um die Kugel mit Urease blau. Diese blaue Zone wird mit der Zeit immer größer. An ihrem Rand gibt es einen schmalen grün-gelben Übergang, außerhalb bleibt die Lösung orange-rot.</p>
+        <p>Skizze: ein Kreis (Schale), in der Mitte die Kugel, um die Kugel ein blauer Ring mit grün-gelbem Rand, der Rest der Schale orange-rot. Nach 15 Minuten ist der blaue Ring deutlich breiter als am Anfang.</p>
+        <p>Im echten Versuch können die Farben etwas anders aussehen, zum Beispiel eher grün als blau. Wichtig ist: Um die Kugel mit Urease ändert sich die Farbe, und die Zone wächst.</p>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">b)</span> pH-Werte<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Am Rand der Schale: orange-rot, also etwa pH&nbsp;3. Die Lösung ist sauer.</p>
+        <p>Direkt an der Kugel: blau, also etwa pH&nbsp;9 bis 10. Die Lösung ist dort alkalisch.</p>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">c)</span> Welche Stoffe sind nötig?<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Nur um die Kugeln <strong>mit</strong> Urease ändert sich die Farbe. Um die Kugeln ohne Urease bleibt die Lösung orange-rot. Ohne Harnstoff in der Lösung ändert sich auch um die Kugel mit Urease nichts.</p>
+        <p>Für die Farbänderung braucht man also <strong>beides</strong>: Urease und Harnstoff. Die Urease bildet aus dem Harnstoff einen Stoff, der die Säure in der Umgebung der Kugel unwirksam macht.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 2 ───────────────────────── -->
+  <section id="aufgabe2">
+    <h2><span class="nr">Aufgabe 2</span> | Modell und Wirklichkeit</h2>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">a)</span> Zuordnung<span class="knopf"></span></summary>
+      <div class="text">
+        <table>
+          <tr><th>Modellversuch</th><th>im Magen</th></tr>
+          <tr><td>verdünnte Salzsäure</td><td>Magensäure (Salzsäure im Magensaft)</td></tr>
+          <tr><td>Alginatkugel</td><td>Bakterium <em>Helicobacter pylori</em></td></tr>
+          <tr><td>Urease in der Kugel</td><td>Enzym Urease, das das Bakterium bildet</td></tr>
+          <tr><td>Harnstoff in der Lösung</td><td>Harnstoff im Magensaft (er gelangt aus dem Blut in den Magen)</td></tr>
+        </table>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">b)</span> Unterschiede<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Zum Beispiel:</p>
+        <ul>
+          <li>Die Kugel ist mehrere Millimeter groß, das Bakterium nur etwa drei Tausendstel Millimeter.</li>
+          <li>Echte Magensäure ist viel saurer (pH&nbsp;1 bis 2) als die Lösung im Modell (pH&nbsp;3).</li>
+          <li>Das Bakterium lebt und bildet ständig neue Urease. Die Kugel lebt nicht; ihre Urease ist irgendwann verbraucht oder unwirksam.</li>
+          <li>Im Magen wird ständig neue Säure gebildet, und der Mageninhalt bewegt sich. In der Petrischale bleibt alles ruhig.</li>
+          <li>Das Bakterium lebt zusätzlich geschützt in der Schleimschicht der Magenwand. Die gibt es im Modell nicht.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 3 ───────────────────────── -->
+  <section id="aufgabe3">
+    <h2><span class="nr">Aufgabe 3</span> | Was passiert an der Kugeloberfläche?</h2>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">a)</span> Spaltung von Harnstoff<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Ein Harnstoff-Molekül lagert sich an die Urease an. Dort wird es gespalten: Es entstehen zwei Ammoniak-Moleküle und ein Kohlenstoffdioxid-Molekül. Die Urease bleibt dabei unverändert und kann das nächste Harnstoff-Molekül spalten.</p>
+        <p class="eq">CO(NH<sub>2</sub>)<sub>2</sub> + H<sub>2</sub>O &nbsp;→&nbsp; 2 NH<sub>3</sub> + CO<sub>2</sub></p>
+        <p>Probe: links und rechts jeweils 1 C-Atom, 2 O-Atome, 2 N-Atome und 6 H-Atome.</p>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">b)</span> Ammoniak und Oxonium-Ion<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Das Oxonium-Ion gibt ein Proton (H<sup>+</sup>) ab. Das Proton wird an das freie Elektronenpaar des Stickstoff-Atoms im Ammoniak-Molekül gebunden. Es entstehen ein Ammonium-Ion und ein Wasser-Molekül. Am Sauerstoff-Atom bleibt das Elektronenpaar der früheren O–H-Bindung als freies Elektronenpaar zurück.</p>
+        <p class="eq">NH<sub>3</sub> + H<sub>3</sub>O<sup>+</sup> &nbsp;→&nbsp; NH<sub>4</sub><sup>+</sup> + H<sub>2</sub>O</p>
+        <p>Protonendonator (Säure): Oxonium-Ion H<sub>3</sub>O<sup>+</sup>. Protonenakzeptor (Base): Ammoniak-Molekül NH<sub>3</sub>. Die Chlorid-Ionen nehmen an der Reaktion nicht teil.</p>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">c)</span> Teilchen und Farbe<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Am Anfang gibt es in der Lupe viele Oxonium-Ionen und keine Ammoniak-Moleküle. Die Urease bildet ständig neue Ammoniak-Moleküle. Diese reagieren mit den Oxonium-Ionen, deshalb werden die Oxonium-Ionen immer weniger, bis keine mehr da sind. Danach bleiben die neu gebildeten Ammoniak-Moleküle übrig, ihre Anzahl nimmt zu.</p>
+        <p>Oxonium-Ionen machen eine Lösung sauer. Direkt an der Kugel gibt es keine mehr, die Lösung ist dort also nicht mehr sauer. Das überschüssige Ammoniak reagiert mit Wasser zu Ammonium-Ionen und Hydroxid-Ionen (wie in Auftrag 4 des Plans). Deshalb ist die Lösung an der Kugel alkalisch, und der Indikator färbt sich blau.</p>
+      </div>
+    </details>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">d)</span> Neutralisation<span class="knopf"></span></summary>
+      <div class="text">
+        <p>Die Oxonium-Ionen, die für die saure Wirkung verantwortlich sind, werden bei der Reaktion mit Ammoniak verbraucht. Die Base hebt also die Wirkung der Säure auf. Eine solche Reaktion einer Säure mit einer Base nennt man Neutralisation.</p>
+        <p>Die Urease bildet aber mehr Ammoniak, als zur Neutralisation der Säure in ihrer Umgebung nötig ist. Ammoniak liegt deshalb im Überschuss vor, und die Lösung an der Kugel wird alkalisch. „Neutralisation“ bedeutet also nicht, dass am Ende immer genau pH&nbsp;7 herauskommt.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 4 ───────────────────────── -->
+  <section id="aufgabe4">
+    <h2><span class="nr">Aufgabe 4</span> | Die Überlebensstrategie</h2>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">a)</span> Überlebensstrategie von <em>Helicobacter pylori</em><span class="knopf"></span></summary>
+      <div class="text">
+        <p><em>Helicobacter pylori</em> bildet das Enzym Urease. Die Urease spaltet Harnstoff aus dem Magensaft in Ammoniak und Kohlenstoffdioxid. Ammoniak ist eine Base: Die Ammoniak-Moleküle nehmen Protonen von den Oxonium-Ionen der Magensäure auf (Protonenübergang). Dabei entstehen Ammonium-Ionen und Wasser-Moleküle. Die Magensäure wird so in der direkten Umgebung des Bakteriums neutralisiert.</p>
+        <p>So entsteht um das Bakterium eine schützende Zone, in der die Lösung nicht mehr sauer ist. Die Magensäure kann das Bakterium dort nicht schädigen, obwohl der übrige Magen stark sauer bleibt. Zusätzlich schützt die Schleimschicht der Magenwand, in der das Bakterium lebt.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ───────────────────────── Aufgabe 5 ───────────────────────── -->
+  <section id="aufgabe5">
+    <h2><span class="nr">Aufgabe 5</span> | Schemazeichnung <span class="zusatz">Zusatzaufgabe</span></h2>
+
+    <details class="loesung">
+      <summary><span class="buchstabe">a)</span> Was die Zeichnung enthalten sollte<span class="knopf"></span></summary>
+      <div class="text">
+        <ul>
+          <li>das Bakterium (Stäbchen) mit Urease an der Oberfläche,</li>
+          <li>außen die Magensäure mit Oxonium-Ionen H<sub>3</sub>O<sup>+</sup> (und Chlorid-Ionen Cl<sup>−</sup>),</li>
+          <li>Harnstoff CO(NH<sub>2</sub>)<sub>2</sub>, der an die Urease gelangt, und den Pfeil zu 2 NH<sub>3</sub> + CO<sub>2</sub>,</li>
+          <li>den Pfeil NH<sub>3</sub> + H<sub>3</sub>O<sup>+</sup> → NH<sub>4</sub><sup>+</sup> + H<sub>2</sub>O direkt neben dem Bakterium,</li>
+          <li>eine markierte Zone um das Bakterium mit der Beschriftung „nicht sauer“ bzw. „neutral bis alkalisch“.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section id="qr" hidden>
+    <h2>QR-Codes zu den Lösungen (Lehrermodus)</h2>
+    <div class="codes">
+      <figure><img src="../../qr/loesungen/helicobacter-aufgabe1.png" alt="QR-Code Aufgabe 1"><figcaption>Aufgabe 1</figcaption></figure>
+      <figure><img src="../../qr/loesungen/helicobacter-aufgabe2.png" alt="QR-Code Aufgabe 2"><figcaption>Aufgabe 2</figcaption></figure>
+      <figure><img src="../../qr/loesungen/helicobacter-aufgabe3.png" alt="QR-Code Aufgabe 3"><figcaption>Aufgabe 3</figcaption></figure>
+      <figure><img src="../../qr/loesungen/helicobacter-aufgabe4.png" alt="QR-Code Aufgabe 4"><figcaption>Aufgabe 4</figcaption></figure>
+      <figure><img src="../../qr/loesungen/helicobacter-aufgabe5.png" alt="QR-Code Aufgabe 5"><figcaption>Aufgabe 5</figcaption></figure>
+    </div>
+  </section>
+
+</main>
+
+<script>
+if (new URLSearchParams(location.search).has('lehrer')) document.getElementById('qr').hidden = false;
+</script>
+</body>
+</html>
