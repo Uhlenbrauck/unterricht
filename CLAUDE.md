@@ -89,7 +89,7 @@ Aufbau des Repos: siehe `README.md`.
   (`c` Chemie, `m` Mathe; Jahrgang `7`, `9`, `ef`, `q1`, `gk`, `lk` …).
   **Eine Kennung nie umbenennen und nie neu vergeben.**
 - Quellen in `hilfen/<thema>.md`, erzeugt mit `python3 tools/hilfen.py`
-  (`pip install markdown segno`). Das Skript schreibt `h/<kennung>/index.html`, `qr/<kennung>.png/.svg`
+  (`pip install markdown segno pillow`). Das Skript schreibt `h/<kennung>/index.html`, `qr/<kennung>.png/.svg`
   und `hilfen/UEBERSICHT.md`. Die erzeugten Dateien nicht von Hand bearbeiten.
 - Formeln als Text mit KaTeX (`$…$`, `$$…$$`), Reaktionsgleichungen mit mhchem (`\ce{…}`),
   nicht als Bild.
