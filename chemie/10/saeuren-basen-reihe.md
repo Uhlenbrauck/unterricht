@@ -17,7 +17,7 @@ Absprachen zur Reihe und zu den Materialien in `chemie/10/`.
 | 1 | Film „So schützt sich H. pylori“ (Quarks & Co.) | – |
 | 2–6 | Ammoniak, Magnetmodell, Reaktion mit Wasser, Brønsted, Leitfähigkeit | – (Link in Auftrag 4 fehlt im AB) |
 | 7 | **Material 5** (ersetzt AB 19 mit Ammoniak-Schaumstoff-Versuch) | `helicobacter-erarbeitung.html` + `helicobacter.html` |
-| 8 | Diagnosetest 2 | – |
+| 8 | Diagnosetest 2 (**muss überarbeitet werden**, siehe „Offen“) | – |
 | 9 | **Material 6** „Die Rolle des Wassers“ (Zusatz) | `rolle-des-wassers.html` |
 
 ## Links
@@ -140,6 +140,8 @@ Bedienung: Pause, Zeitlupe, Neu.
 Erklärtexte und Reaktionsgleichungen im Tool, pH-Zahlen in der Schale, Antippen von Teilchen.
 
 ## Offen
+
+- **Diagnosetest 2 überarbeiten.**
 
 - Versuch erproben (mit den S), danach Mengen hier und auf der Erarbeitungsseite anpassen.
 - Ggf. Lehrermodus-Werte für Teil 1 (Diffusion, Rate) an die beobachtete Hofgröße anpassen.
