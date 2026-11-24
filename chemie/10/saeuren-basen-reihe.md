@@ -70,6 +70,32 @@ Schnelltest, ob die Urease aktiv ist: Harnstofflösung + Urease + 1 Tropfen Phen
 - Die Kugeln ohne Urease müssen orange-rot bleiben. Sonst Alginat- oder Calciumchlorid-Reste prüfen
   (Kugeln gründlich spülen).
 
+## Auftrag 6: Leitfähigkeit der Ammoniak-Lösung
+
+**Ammoniak-Lösung c = 0,1 mol/L** (≈ 0,17 % NH₃). Ansetzen einmal für alle unter dem Abzug:
+7,5 mL Ammoniak-Lösung 25 % mit dest. Wasser auf 1 L auffüllen. Unter 1 % NH₃ in der Regel nicht
+kennzeichnungspflichtig (CLP-Grenzwerte); mit der eigenen Gefährdungsbeurteilung abgleichen.
+
+**Nachweis über Strommessung, nicht über Lampe oder LED** (Erfahrung im Unterricht):
+- Die kleine Glühbirne leuchtet bei **keiner** Ammoniak-Konzentration. Ammoniak ist eine schwache Base,
+  die Leitfähigkeit bleibt auch bei hoher Konzentration bei höchstens wenigen mS/cm.
+  Eine höhere Konzentration bringt also nichts außer mehr Gefährdung.
+- Die LED mit Spannungswandler leuchtet schon bei wenigen µA, also auch bei VE-Wasser. Sie unterscheidet
+  Wasser und Ammoniak-Lösung nicht.
+- Stattdessen: Elektroden (Abstand etwa 1 cm), Gleichspannung etwa 6 V, Amperemeter (Multimeter im mA-Bereich)
+  in Reihe. Abgeschätzte Stromstärken (aus Literaturdaten berechnet, nicht gemessen; hängen von Elektroden
+  und Eintauchtiefe ab):
+
+| Lösung | Leitfähigkeit | Stromstärke bei 6 V |
+|---|---|---|
+| VE-Wasser | ≈ 0,005 mS/cm | ≈ 0,03 mA |
+| Ammoniak-Lösung 0,1 mol/L | ≈ 0,35 mS/cm | ≈ 2 mA |
+| Ammoniak-Lösung 1 mol/L | ≈ 1,1 mS/cm | ≈ 7 mA |
+| Salzsäure 0,1 mol/L | ≈ 39 mS/cm | ≈ 230 mA (Glühbirne leuchtet) |
+
+- Zum Vergleich bietet sich Salzsäure 0,1 mol/L an: gleiche Konzentration, aber etwa 100-mal mehr Strom.
+  Daran sehen die S, dass Ammoniak mit Wasser nur wenige Ionen bildet (Anknüpfung an M6, Aufgabe 5).
+
 ## Animation: getroffene Entscheidungen
 
 **Teil 1 – Modellversuch (`#modell`):** Petrischale von oben, eine Alginatkugel mit Urease in der Mitte,
