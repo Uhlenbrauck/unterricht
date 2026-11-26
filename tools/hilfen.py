@@ -135,7 +135,8 @@ GRUEN, GRUEN_TEXT = "#e8f0eb", "#2d5a3d"     # wie Lösungskarten
 
 def etikett(aufgabe, art):
     """Beschriftung für die Mitte des QR-Codes: oben z. B. A1c, darunter Kästchen."""
-    oben = f"A{aufgabe}" if aufgabe else ""
+    # Aufgabennummern (1c) bekommen ein A davor, Gruppenbuchstaben (A, B, C) nicht
+    oben = (f"A{aufgabe}" if aufgabe[:1].isdigit() else aufgabe) if aufgabe else ""
     m = re.search(r"(\d+)$", art)
     if m:
         return oben, m.group(1), BLAU, BLAU_TEXT
