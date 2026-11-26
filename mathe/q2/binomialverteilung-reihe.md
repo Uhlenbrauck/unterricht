@@ -12,6 +12,9 @@ Absprachen zur Reihe und zum Tool `binomialverteilung.html`.
 | 4 | Erarbeitungsseite (statt AB) | A1 Histogramm lesen (MC-Test), A2 Abhängigkeit von n und p, A3 zuordnen, A4 prüfen, A5 schätzen | Teile 1–5 |
 | 5 | **AB 37** | Übungen aus dem Buch | – |
 | 6 | AB kumulierte Binomialverteilung (nach AB 62 des LK) | MC-Test mit 50 Fragen, P(X ≥ 20) usw. A1 d) bereitet das qualitativ vor, ohne Summen zu berechnen. | – |
+| 7 | **AB 38/39** | Kumulierte Binomialverteilung, Übungen | – |
+| 8 | **AB 40/41** | Erwartungswert und Standardabweichung am MC-Test, Faustregel „etwa zwei Drittel“ (keine σ-Regeln im GK) | – |
+| 9 | **AB 42A–C, 43** (Doppelstunde) | Parameter bestimmen als Gruppenpuzzle (Fernbus): A k gesucht, B n gesucht, C p gesucht; Stammgruppe: Übersicht und Ansätze zuordnen | – |
 
 ## Links
 
@@ -22,6 +25,17 @@ Absprachen zur Reihe und zum Tool `binomialverteilung.html`.
   (Sprungziele `#aufgabe1` … `#aufgabe5`)
 - Tool: https://uhlenbrauck.github.io/unterricht/mathe/q2/binomialverteilung.html mit `#lesen`, `#erkunden`, `#zuordnen`, `#pruefen`, `#schaetzen`
 - Lehrermodus: `…/binomialverteilung.html?lehrer#erkunden`
+
+## Parameter bestimmen (AB 42/43)
+
+- Standardweg im CAS: Funktion im Calculator definieren (`f(x):=binomCdf(…)`, x an der Stelle der Unbekannten),
+  dann Lists & Spreadsheet, ctrl + T, f auswählen, Tabelleneinstellungen (Schritt 1, bei p erst 0,1, dann 0,01).
+  Kein `seq`.
+- Schreibweise im Kurs: $P_p^n(X\le k)$. Ansatzgerüst auf dem AB: $P_p^n(X\,\square\,\square)\,\square\,\square$.
+- Dokumentation in Klausuren: die beiden kritischen Werte links und rechts vom Sprung.
+- Expertengruppen nach Leistungsstand vorgegeben: A (k) am einfachsten, C (p) am schwierigsten.
+- Hilfekarten mit QR-Code: `hilfen/mgk-param-a.md`, `-b.md`, `-c.md` (je drei gestufte Karten).
+  Die „mindestens einmal“-Fälle (solve) folgen in einer Einzelstunde, falls Zeit bleibt.
 
 ## Tool: getroffene Entscheidungen
 
